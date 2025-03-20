@@ -14,7 +14,8 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-@Entity(name = "UserModel")
-@Table(name = "users")
+//@Entity(name = "UserModel")
+//@Table(name = "users")
 public class UserModel extends UserBaseModel {
+    private int kkk;
 }
