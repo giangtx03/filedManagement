@@ -3,7 +3,7 @@ package com.fieldmanagement.commom.model.enums;
 public enum RoleEnum {
     ADMIN(0), MANAGER(1), USER(2);
 
-    private final int value;
+    public final int value;
 
     RoleEnum(int value) {
         this.value = value;

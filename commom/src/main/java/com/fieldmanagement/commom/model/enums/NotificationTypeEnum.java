@@ -3,7 +3,7 @@ package com.fieldmanagement.commom.model.enums;
 public enum NotificationTypeEnum {
     BOOKING(0), FAVORITE(1), REVIEW(2), PAYMENT(3);
 
-    private final int value;
+    public final int value;
 
     NotificationTypeEnum(int value) {
         this.value = value;

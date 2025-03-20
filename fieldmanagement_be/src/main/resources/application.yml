@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: Field Management BE
+  datasource:
+    url: jdbc:mariadb://localhost:3306/fieldDB
+    username: root
+    password: root
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MariaDBDialect
+        format_sql: true
+    show-sql: true

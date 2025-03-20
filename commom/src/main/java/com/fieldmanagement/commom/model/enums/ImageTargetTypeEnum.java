@@ -3,7 +3,7 @@ package com.fieldmanagement.commom.model.enums;
 public enum ImageTargetTypeEnum {
     FIELD(0), USER(1), REVIEW(2);
 
-    private final int value;
+    public final int value;
 
     ImageTargetTypeEnum(int value) {
         this.value = value;

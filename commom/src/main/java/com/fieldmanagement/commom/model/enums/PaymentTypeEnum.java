@@ -3,7 +3,7 @@ package com.fieldmanagement.commom.model.enums;
 public enum PaymentTypeEnum {
     PAY(0), DEPOSIT(1), REFUNDED(2);
 
-    private final int value;
+    public final int value;
 
     PaymentTypeEnum(int value) {
         this.value = value;

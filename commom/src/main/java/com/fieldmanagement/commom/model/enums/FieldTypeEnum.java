@@ -3,7 +3,7 @@ package com.fieldmanagement.commom.model.enums;
 public enum FieldTypeEnum {
     FIELD_5(0), FIELD_7(1), FIELD_9(2), FIELD_11(3);
 
-    private final int value;
+    public final int value;
 
     FieldTypeEnum(int value) {
         this.value = value;

@@ -3,7 +3,7 @@ package com.fieldmanagement.commom.model.enums;
 public enum ProviderEnum {
     GOOGLE(0), FACEBOOK(1), GITHUB(2);
 
-    private final int value;
+    public final int value;
 
     ProviderEnum(int value) {
         this.value = value;

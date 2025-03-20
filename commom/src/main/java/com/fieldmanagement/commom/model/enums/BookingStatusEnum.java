@@ -5,7 +5,7 @@ public enum BookingStatusEnum {
     PAID(2), CONFIRMED(3), IN_PROGRESS(4),
     COMPLETED(5), CANCELED(6), REFUNDED(7);
 
-    private final int value;
+    public final int value;
 
     BookingStatusEnum(int value) {
         this.value = value;

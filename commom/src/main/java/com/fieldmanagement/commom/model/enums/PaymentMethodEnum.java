@@ -3,7 +3,7 @@ package com.fieldmanagement.commom.model.enums;
 public enum PaymentMethodEnum {
     CASH(0), VNPAY(1), CREDIT(2);
 
-    private final int value;
+    public final int value;
 
     PaymentMethodEnum(int value) {
         this.value = value;

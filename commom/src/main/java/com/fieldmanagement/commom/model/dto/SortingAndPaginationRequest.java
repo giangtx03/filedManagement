@@ -7,11 +7,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class SortingRequest {
+public class SortingAndPaginationRequest extends PaginationRequest {
     private String order;
     private String direction;
 
-    public SortingRequest(){
+    public SortingAndPaginationRequest(){
+        super();
         this.order = "updatedAt";
         this.direction = "asc";
     }
