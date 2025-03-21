@@ -21,10 +21,10 @@ import java.time.OffsetDateTime;
 public class BaseModel {
 
     @CreationTimestamp
-    @Column(name = "created_at", columnDefinition = "TIMESTAMP WITH TIME ZONE", updatable = false)
+    @Column(name = "created_at", updatable = false)
     private OffsetDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(name = "updated_at", columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    @Column(name = "updated_at")
     private OffsetDateTime updatedAt;
 }

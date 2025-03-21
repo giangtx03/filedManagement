@@ -6,6 +6,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
+import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,8 +15,6 @@ import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.UuidGenerator;
-
-import java.time.OffsetDateTime;
 
 @Getter
 @Setter
@@ -34,7 +33,7 @@ public class BookingBaseModel extends BaseModel {
     String note;
 
     @Column(name = "booking_date", updatable = false)
-    OffsetDateTime bookingDate;
+    LocalDate bookingDate;
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "status", nullable = false)
