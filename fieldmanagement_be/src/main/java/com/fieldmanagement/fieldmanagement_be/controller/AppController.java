@@ -1,8 +1,12 @@
 package com.fieldmanagement.fieldmanagement_be.controller;
 
 import com.fieldmanagement.fieldmanagement_be.config.language.LanguageService;
+import com.fieldmanagement.fieldmanagement_be.model.entity.UserModel;
+import com.fieldmanagement.fieldmanagement_be.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AppController {
     private final LanguageService languageService;
+    private final UserService userService;
 
     @GetMapping
     public String hello(){
@@ -19,10 +24,11 @@ public class AppController {
         return languageService.getMessage("hello");
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/name")
     public String myName(
-            @Param("name") String name
     ){
-        return languageService.getMessage("user", name);
+        UserModel userModel = userService.getUserFromSecurity();
+        return languageService.getMessage("user", StringUtils.hasText(userModel.getEmail()) ? userModel.getEmail() : null);
     }
 }

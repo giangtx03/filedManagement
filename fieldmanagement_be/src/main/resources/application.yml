@@ -14,3 +14,14 @@ spring:
         dialect: org.hibernate.dialect.MariaDBDialect
         format_sql: true
     show-sql: true
+
+api:
+  prefix: /api/v1
+
+jwt:
+  accessKey: 23FFE43956B2GI41NG8A899868EA6A43D49
+  refreshKey: B29CD6E128GI41NGA8642E54DE16BAAD1E6
+  expiration:
+    time:
+      access: 3600000
+      refresh: 86400000
