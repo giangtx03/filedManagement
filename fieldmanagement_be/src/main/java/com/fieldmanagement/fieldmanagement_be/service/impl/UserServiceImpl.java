@@ -34,22 +34,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserModel findByEmail(String email) {
         return userRepo.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException(
-                        languageService.getMessage("user.email.not.found", email)));
-    }
-
-    @Override
-    public UserModel getUserFromSecurity() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return null;
-        }
-        Object principal = authentication.getPrincipal();
-        if (principal instanceof UserDetailsImpl) {
-            return ((UserDetailsImpl) principal).getUser();
-        }
-        return null;
+                .orElseThrow(() -> new UserNotFoundException(""));
     }
 
     @Override

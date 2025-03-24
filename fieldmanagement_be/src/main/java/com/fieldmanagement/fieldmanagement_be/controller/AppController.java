@@ -3,6 +3,7 @@ package com.fieldmanagement.fieldmanagement_be.controller;
 import com.fieldmanagement.fieldmanagement_be.config.language.LanguageService;
 import com.fieldmanagement.fieldmanagement_be.model.entity.UserModel;
 import com.fieldmanagement.fieldmanagement_be.service.UserService;
+import com.fieldmanagement.fieldmanagement_be.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,7 +29,7 @@ public class AppController {
     @GetMapping("/name")
     public String myName(
     ){
-        UserModel userModel = userService.getUserFromSecurity();
+        UserModel userModel = SecurityUtils.getUserFromSecurity();
         return languageService.getMessage("user", StringUtils.hasText(userModel.getEmail()) ? userModel.getEmail() : null);
     }
 }

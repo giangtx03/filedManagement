@@ -62,16 +62,12 @@ public class JwtProvider {
     }
 
     public DecodedJWT decodeToken(String token) {
-        try {
-            Algorithm algorithm = Algorithm.HMAC256(accessKey);
+        Algorithm algorithm = Algorithm.HMAC256(accessKey);
 
-            JWTVerifier verifier = JWT.require(algorithm)
-                    .withIssuer(FieldmanagementBeApplication.class.getPackageName())
-                    .build();
+        JWTVerifier verifier = JWT.require(algorithm)
+                .withIssuer(FieldmanagementBeApplication.class.getPackageName())
+                .build();
 
-            return verifier.verify(token);
-        } catch (JWTVerificationException e) {
-            throw new JWTVerificationException(languageService.getMessage("token.invalid"));
-        }
+        return verifier.verify(token);
     }
 }

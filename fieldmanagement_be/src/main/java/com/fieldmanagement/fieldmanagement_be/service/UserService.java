@@ -8,7 +8,5 @@ import java.util.Optional;
 
 public interface UserService {
     UserModel findByEmail(String email);
-    UserModel getUserFromSecurity();
-
     TokenDto login(String email, String password) throws AuthenticationException;
 }
