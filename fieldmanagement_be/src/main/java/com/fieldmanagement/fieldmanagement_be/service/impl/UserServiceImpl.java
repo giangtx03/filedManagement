@@ -3,7 +3,6 @@ package com.fieldmanagement.fieldmanagement_be.service.impl;
 import com.fieldmanagement.commom.exception.UserNotFoundException;
 import com.fieldmanagement.fieldmanagement_be.config.jwt.JwtProvider;
 import com.fieldmanagement.fieldmanagement_be.config.language.LanguageService;
-import com.fieldmanagement.fieldmanagement_be.config.security.UserDetailsImpl;
 import com.fieldmanagement.fieldmanagement_be.dao.repository.UserRepo;
 import com.fieldmanagement.fieldmanagement_be.model.dto.TokenDto;
 import com.fieldmanagement.fieldmanagement_be.model.entity.UserModel;
@@ -12,9 +11,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

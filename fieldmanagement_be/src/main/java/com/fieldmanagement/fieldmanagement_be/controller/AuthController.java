@@ -2,6 +2,7 @@ package com.fieldmanagement.fieldmanagement_be.controller;
 
 import com.fieldmanagement.fieldmanagement_be.model.dto.TokenDto;
 import com.fieldmanagement.fieldmanagement_be.service.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +14,7 @@ import javax.security.sasl.AuthenticationException;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("${api.prefix}/auth")
+@Tag(name = "Auth", description = "Registration login processing controller")
 public class AuthController {
 
     private final UserService userService;

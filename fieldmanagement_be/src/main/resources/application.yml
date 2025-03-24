@@ -25,3 +25,10 @@ jwt:
     time:
       access: 3600000
       refresh: 86400000
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    path: api/v1/swagger-ui.html
+    enabled: true

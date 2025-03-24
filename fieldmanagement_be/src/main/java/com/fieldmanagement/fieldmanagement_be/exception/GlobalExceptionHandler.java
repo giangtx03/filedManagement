@@ -8,11 +8,13 @@ import com.fieldmanagement.commom.model.enums.StatusCodeEnum;
 import com.fieldmanagement.fieldmanagement_be.config.language.LanguageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ public class GlobalExceptionHandler {
     private final LanguageService languageService;
 
     @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ResponseDto<Void>> handleUserNotFoundException(UserNotFoundException e) {
         log.error("User Not Found Exception: {}", e.getMessage());
 
@@ -40,6 +43,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(AuthorizationDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
     public ResponseEntity<ResponseDto<Void>> handleAuthorizationDeniedException(AuthorizationDeniedException e) {
         log.error("Authorization Denied Exception: {}", e.getMessage());
 
@@ -53,6 +57,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(JWTVerificationException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
     ResponseEntity<ResponseDto<Void>> handlerJWTVerificationException(JWTVerificationException e) {
 
         log.error("JWT Verification Error: {}", e.getMessage());
@@ -67,6 +72,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     ResponseEntity<ResponseDto<Void>> handlerException(Exception e) {
 
         log.error("Exception occurred: {}", e.getMessage());
@@ -81,6 +87,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ResponseDto<Map<String, List<String>>>> handleValidationException(
             MethodArgumentNotValidException ex
     ) {
