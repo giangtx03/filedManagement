@@ -3,9 +3,15 @@ package com.fieldmanagement.fieldmanagement_be.service.impl;
 import com.fieldmanagement.commom.exception.UserNotFoundException;
 import com.fieldmanagement.fieldmanagement_be.config.jwt.JwtProvider;
 import com.fieldmanagement.fieldmanagement_be.config.language.LanguageService;
+import com.fieldmanagement.fieldmanagement_be.dao.repository.UserDetailRepo;
 import com.fieldmanagement.fieldmanagement_be.dao.repository.UserRepo;
 import com.fieldmanagement.fieldmanagement_be.model.dto.TokenDto;
+import com.fieldmanagement.fieldmanagement_be.model.dto.UserDetailDto;
 import com.fieldmanagement.fieldmanagement_be.model.entity.UserModel;
+import com.fieldmanagement.fieldmanagement_be.model.mapper.UserMapper;
+import com.fieldmanagement.fieldmanagement_be.model.request.LoginRequest;
+import com.fieldmanagement.fieldmanagement_be.model.response.LoginResponse;
+import com.fieldmanagement.fieldmanagement_be.model.response.UserResponse;
 import com.fieldmanagement.fieldmanagement_be.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +29,8 @@ import javax.security.sasl.AuthenticationException;
 public class UserServiceImpl implements UserService {
 
     private final UserRepo userRepo;
+    private final UserDetailRepo userDetailRepo;
+    private final UserMapper userMapper;
     private final LanguageService languageService;
     private final JwtProvider jwtProvider;
     private final PasswordEncoder passwordEncoder;
@@ -34,25 +42,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public TokenDto login(String email, String password) {
-        try {
-            UserModel userModel = findByEmail(email);
+    public LoginResponse login(LoginRequest loginRequest) throws AuthenticationException {
+        UserModel userModel = findByEmail(loginRequest.getEmail());
 
-            if (userModel.getIsLocked()) {
-                throw new LockedException("Tài khoản đã bị khóa");
-            }
-            if (!userModel.getIsActive()) {
-                throw new DisabledException("Tài khoản chưa được kích hoạt");
-            }
-
-            if (!passwordEncoder.matches(password, userModel.getPassword())) {
-                throw new AuthenticationException("Sai thông tin tài khoản");
-            }
-
-            return jwtProvider.generateToken(userModel);
-        }catch (AuthenticationException e){
-            log.warn("sai thông tin tài khoản");
+        if (userModel.getIsLocked()) {
+            throw new LockedException("Tài khoản đã bị khóa");
         }
-        return null;
+        if (!userModel.getIsActive()) {
+            throw new DisabledException("Tài khoản chưa được kích hoạt");
+        }
+        if (!passwordEncoder.matches(loginRequest.getPassword(), userModel.getPassword())) {
+            throw new AuthenticationException("Sai thông tin tài khoản");
+        }
+
+        TokenDto tokenDto =  jwtProvider.generateToken(userModel);
+        UserDetailDto userDetailDto = userDetailRepo.findByUserId(userModel.getId())
+                .orElseThrow(() -> new UserNotFoundException(""));
+
+        UserResponse userResponse = userMapper.toResponse(userDetailDto);
+        return LoginResponse.builder()
+                .accessToken(tokenDto.getAccessToken())
+                .refreshToken(tokenDto.getRefreshToken())
+                .user(userResponse)
+                .build();
     }
 }

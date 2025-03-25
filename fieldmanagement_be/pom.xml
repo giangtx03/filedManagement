@@ -13,6 +13,9 @@
 
 	<name>FieldManagementBE</name>
 	<description>Backend module for FieldManagement</description>
+	<properties>
+		<org.mapstruct.version>1.6.3</org.mapstruct.version>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -60,9 +63,16 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-redis</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>redis.clients</groupId>
 			<artifactId>jedis</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>${org.mapstruct.version}</version>
 		</dependency>
 	</dependencies>
 
@@ -76,6 +86,11 @@
 						<path>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
+						</path>
+						<path>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct-processor</artifactId>
+							<version>${org.mapstruct.version}</version>
 						</path>
 					</annotationProcessorPaths>
 				</configuration>
@@ -106,7 +121,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<configLocation>config/checkstyle/google_checks.xml</configLocation>
+					<configLocation>config/google_checks.xml</configLocation>
 					<consoleOutput>true</consoleOutput>
 					<failOnViolation>true</failOnViolation>
 				</configuration>

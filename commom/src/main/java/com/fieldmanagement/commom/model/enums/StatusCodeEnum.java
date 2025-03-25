@@ -11,12 +11,13 @@ public enum StatusCodeEnum {
     VALIDATION_ERROR(1001, "exception.validation.error", HttpStatus.BAD_REQUEST),
     JWT_VERIFICATION_ERROR(1002, "exception.jwt.verification.error", HttpStatus.FORBIDDEN),
 //    Auth 11xx
-    UNAUTHENTICATED(1101, "auth.authenticated.error", HttpStatus.UNAUTHORIZED),
-    ACCESS_DENIED(1102, "auth.access.denied", HttpStatus.FORBIDDEN),
+    LOGIN_SUCCESSFULLY(1100, "auth.login.successfully", HttpStatus.ACCEPTED),
+    UNAUTHENTICATED(1150, "auth.authenticated.error", HttpStatus.UNAUTHORIZED),
+    ACCESS_DENIED(1150, "auth.access.denied", HttpStatus.FORBIDDEN),
 //    User 12xx
-    USER_LOCKED(1201, "user.locked.error", HttpStatus.BAD_REQUEST),
-    USER_UNACTIVE(1202, "user.unactive.error", HttpStatus.BAD_REQUEST),
-    USER_NOT_FOUND(1203, "user.not.found", HttpStatus.NOT_FOUND)
+    USER_LOCKED(1250, "user.locked.error", HttpStatus.BAD_REQUEST),
+    USER_UNACTIVE(1251, "user.unactive.error", HttpStatus.BAD_REQUEST),
+    USER_NOT_FOUND(1252, "user.not.found", HttpStatus.NOT_FOUND)
 //    Booking 13xx
 //    Review 14xx
 //    Payment 15xx
