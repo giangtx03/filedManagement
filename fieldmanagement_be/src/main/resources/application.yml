@@ -16,6 +16,12 @@ spring:
         dialect: org.hibernate.dialect.MariaDBDialect
         format_sql: true
     show-sql: ${SHOW_SQL}
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
+    password: ${REDIS_PASSWORD}
+    timeout: ${REDIS_TIMEOUT}
+    database: ${REDIS_DATABASE}
 server:
   port: ${SERVER_PORT}
 api:
