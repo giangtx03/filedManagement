@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: Field Management BE
+  profiles:
+    active: ${ACTIVE_PROFILE:dev}
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: ${JPA_DDL_AUTO}
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MariaDBDialect
+        format_sql: true
+    show-sql: ${SHOW_SQL}
+server:
+  port: ${SERVER_PORT}
+api:
+  prefix: ${API_PREFIX}
+
+jwt:
+  accessKey: ${JWT_ACCESS_KEY}
+  refreshKey: ${JWT_REFRESH_KEY}
+  expiration:
+    time:
+      access: ${JWT_ACCESS_TIME}
+      refresh: ${JWT_REFRESH_TIME}
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    path: ${SWAGGER_PATH}
+    enabled: true
