@@ -22,6 +22,11 @@ spring:
     password: ${REDIS_PASSWORD}
     timeout: ${REDIS_TIMEOUT}
     database: ${REDIS_DATABASE}
+  mail:
+    host: ${MAIL_HOST}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    port: ${MAIL_PORT}
 server:
   port: ${SERVER_PORT}
 api:
