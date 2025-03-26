@@ -13,11 +13,11 @@ import lombok.Setter;
 @NoArgsConstructor
 public class LoginRequest {
     @Parameter(example = "user@gmail.com")
-    @NotBlank
+    @NotBlank(message = "email.not.blank")
     private String email;
 
 
     @Parameter(example = "user123")
-    @NotBlank
+    @NotBlank(message = "password.not.blank")
     private String password;
 }

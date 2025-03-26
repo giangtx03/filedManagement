@@ -8,10 +8,14 @@ import com.fieldmanagement.fieldmanagement_be.model.request.LoginRequest;
 import com.fieldmanagement.fieldmanagement_be.model.response.LoginResponse;
 import com.fieldmanagement.fieldmanagement_be.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import jdk.jfr.ContentType;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,7 +31,7 @@ public class AuthController {
     private final LanguageService languageService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@ParameterObject LoginRequest loginRequest)
+    public ResponseEntity<?> login(@Valid @ParameterObject LoginRequest loginRequest)
     throws AuthenticationException {
         LoginResponse loginResponse = userService.login(loginRequest);
 

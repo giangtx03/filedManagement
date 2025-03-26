@@ -8,22 +8,24 @@ import com.fieldmanagement.commom.model.enums.StatusCodeEnum;
 import com.fieldmanagement.fieldmanagement_be.config.language.LanguageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.NoSuchMessageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.security.sasl.AuthenticationException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestControllerAdvice
@@ -133,15 +135,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ResponseDto<Map<String, List<String>>>> handleValidationException(
             MethodArgumentNotValidException ex
     ) {
-        Map<String, List<String>> errors = new HashMap<>();
-
-        ex.getBindingResult().getFieldErrors().forEach(error -> {
-            String field = error.getField();
-            String errorMessage = error.getDefaultMessage();
-            String localizedMessage = StringUtils.hasText(languageService.getMessage(errorMessage))
-                    ? languageService.getMessage(errorMessage) : errorMessage;
-            errors.computeIfAbsent(field, key -> new ArrayList<>()).add(localizedMessage);
-        });
+        Map<String, List<String>> errors = ex.getBindingResult().getFieldErrors().stream()
+                .collect(Collectors.groupingBy(
+                        FieldError::getField,
+                        Collectors.mapping(error -> {
+                            String message = error.getDefaultMessage();
+                            return Optional.ofNullable(getLocalizedMessage(message)).orElse(message);
+                        }, Collectors.toList())
+                ));
 
         ResponseDto<Map<String, List<String>>> responseDto = ResponseBuilder.errorResponse(
                 StatusCodeEnum.VALIDATION_ERROR.getCode(),
@@ -154,4 +155,12 @@ public class GlobalExceptionHandler {
                 .body(responseDto);
     }
 
+    private String getLocalizedMessage(String message) {
+        try {
+            String translatedMessage = languageService.getMessage(message);
+            return StringUtils.hasText(translatedMessage) ? translatedMessage : null;
+        } catch (NoSuchMessageException e) {
+            return null;
+        }
+    }
 }
