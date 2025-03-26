@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.security.sasl.AuthenticationException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +30,45 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
     private final LanguageService languageService;
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ResponseDto<Void>> handleAuthenticationException(AuthenticationException e) {
+        log.error("Login info error: {}", e.getMessage());
+
+        ResponseDto<Void> responseDto = ResponseBuilder.errorResponse(
+                StatusCodeEnum.UNAUTHENTICATED.getCode(),
+                languageService.getMessage(StatusCodeEnum.UNAUTHENTICATED.getMessage()));
+
+        return ResponseEntity
+                .status(StatusCodeEnum.UNAUTHENTICATED.getHttpStatusCode())
+                .body(responseDto);
+    }
+
+    @ExceptionHandler(LockedException.class)
+    public ResponseEntity<ResponseDto<Void>> handleLockedException(LockedException e) {
+        log.error("Account is locked: {}", e.getMessage());
+
+        ResponseDto<Void> responseDto = ResponseBuilder.errorResponse(
+                StatusCodeEnum.USER_LOCKED.getCode(),
+                languageService.getMessage(StatusCodeEnum.USER_LOCKED.getMessage()));
+
+        return ResponseEntity
+                .status(StatusCodeEnum.USER_LOCKED.getHttpStatusCode())
+                .body(responseDto);
+    }
+
+    @ExceptionHandler(DisabledException.class)
+    public ResponseEntity<ResponseDto<Void>> handleDisabledException(DisabledException e) {
+        log.error("Account is unactive: {}", e.getMessage());
+
+        ResponseDto<Void> responseDto = ResponseBuilder.errorResponse(
+                StatusCodeEnum.USER_UNACTIVE.getCode(),
+                languageService.getMessage(StatusCodeEnum.USER_UNACTIVE.getMessage()));
+
+        return ResponseEntity
+                .status(StatusCodeEnum.USER_UNACTIVE.getHttpStatusCode())
+                .body(responseDto);
+    }
 
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)

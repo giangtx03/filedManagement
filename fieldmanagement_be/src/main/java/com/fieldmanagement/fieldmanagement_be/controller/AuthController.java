@@ -9,6 +9,7 @@ import com.fieldmanagement.fieldmanagement_be.model.response.LoginResponse;
 import com.fieldmanagement.fieldmanagement_be.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,13 +27,16 @@ public class AuthController {
     private final LanguageService languageService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(LoginRequest loginRequest) throws AuthenticationException {
+    public ResponseEntity<?> login(@ParameterObject LoginRequest loginRequest)
+    throws AuthenticationException {
+        LoginResponse loginResponse = userService.login(loginRequest);
+
         StatusCodeEnum statusCodeEnum = StatusCodeEnum.LOGIN_SUCCESSFULLY;
 
         ResponseDto<LoginResponse> responseDto = ResponseBuilder.okResponse(
                 statusCodeEnum.getCode(),
                 languageService.getMessage(statusCodeEnum.getMessage()),
-                userService.login(loginRequest)
+                loginResponse
         );
         return ResponseEntity
                 .status(statusCodeEnum.getHttpStatusCode())

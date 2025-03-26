@@ -45,19 +45,19 @@ public class UserServiceImpl implements UserService {
     public LoginResponse login(LoginRequest loginRequest) throws AuthenticationException {
         UserModel userModel = findByEmail(loginRequest.getEmail());
 
-        if (userModel.getIsLocked()) {
-            throw new LockedException("Tài khoản đã bị khóa");
+        if (!passwordEncoder.matches(loginRequest.getPassword(), userModel.getPassword())) {
+            throw new AuthenticationException(loginRequest.getEmail() + loginRequest.getPassword());
         }
         if (!userModel.getIsActive()) {
-            throw new DisabledException("Tài khoản chưa được kích hoạt");
+            throw new DisabledException(loginRequest.getEmail());
         }
-        if (!passwordEncoder.matches(loginRequest.getPassword(), userModel.getPassword())) {
-            throw new AuthenticationException("Sai thông tin tài khoản");
+        if (userModel.getIsLocked()) {
+            throw new LockedException(loginRequest.getEmail());
         }
 
-        TokenDto tokenDto =  jwtProvider.generateToken(userModel);
         UserDetailDto userDetailDto = userDetailRepo.findByUserId(userModel.getId())
-                .orElseThrow(() -> new UserNotFoundException(""));
+                .orElseThrow(() -> new UserNotFoundException(userModel.getEmail()));
+        TokenDto tokenDto =  jwtProvider.generateToken(userModel);
 
         UserResponse userResponse = userMapper.toResponse(userDetailDto);
         return LoginResponse.builder()
