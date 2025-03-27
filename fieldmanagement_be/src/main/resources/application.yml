@@ -27,6 +27,12 @@ spring:
     username: ${MAIL_USERNAME}
     password: ${MAIL_PASSWORD}
     port: ${MAIL_PORT}
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    enabled: true
+    check-template-location: true
+    mode: HTML
 server:
   port: ${SERVER_PORT}
 api:
