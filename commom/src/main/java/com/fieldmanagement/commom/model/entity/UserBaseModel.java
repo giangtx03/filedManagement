@@ -36,10 +36,10 @@ public class UserBaseModel extends BaseModel {
     String password;
 
     @Column(name = "is_locked", nullable = false)
-    Boolean isLocked;
+    boolean isLocked;
 
     @Column(name = "is_active", nullable = false)
-    Boolean isActive;
+    boolean isActive;
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "role")
