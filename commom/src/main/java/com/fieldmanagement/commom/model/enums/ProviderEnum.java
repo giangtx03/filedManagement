@@ -1,7 +1,7 @@
 package com.fieldmanagement.commom.model.enums;
 
 public enum ProviderEnum {
-    GOOGLE(0), FACEBOOK(1), GITHUB(2);
+    LOCAL_SYSTEM(0), GOOGLE(1), FACEBOOK(2), GITHUB(3);
 
     public final int value;
 

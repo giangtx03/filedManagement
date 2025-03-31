@@ -1,6 +1,7 @@
 package com.fieldmanagement.fieldmanagement_be.exception;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.fieldmanagement.commom.exception.EmailExistsException;
 import com.fieldmanagement.commom.exception.UserNotFoundException;
 import com.fieldmanagement.commom.model.builder.ResponseBuilder;
 import com.fieldmanagement.commom.model.dto.ResponseDto;
@@ -25,6 +26,7 @@ import javax.security.sasl.AuthenticationException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.TooManyListenersException;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -33,16 +35,45 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler {
     private final LanguageService languageService;
 
+    @ExceptionHandler(TooManyListenersException.class)
+    public ResponseEntity<ResponseDto<Void>> handleTooManyListenersException(
+            TooManyListenersException e
+    ) {
+        log.error("Too Many Listeners error: {}", e.getMessage());
+
+        ResponseDto<Void> responseDto = ResponseBuilder.errorResponse(
+                StatusCodeEnum.TOO_MANY_REQUEST.code,
+                languageService.getMessage(StatusCodeEnum.TOO_MANY_REQUEST.message,
+                        e.getMessage()));
+
+        return ResponseEntity
+                .status(StatusCodeEnum.TOO_MANY_REQUEST.httpStatusCode)
+                .body(responseDto);
+    }
+
+    @ExceptionHandler(EmailExistsException.class)
+    public ResponseEntity<ResponseDto<Void>> handleEmailExistsException(EmailExistsException e) {
+        log.error("Email error: {}", e.getMessage());
+
+        ResponseDto<Void> responseDto = ResponseBuilder.errorResponse(
+                StatusCodeEnum.EMAIL_IS_EXISTS.code,
+                languageService.getMessage(StatusCodeEnum.EMAIL_IS_EXISTS.message));
+
+        return ResponseEntity
+                .status(StatusCodeEnum.EMAIL_IS_EXISTS.httpStatusCode)
+                .body(responseDto);
+    }
+
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ResponseDto<Void>> handleAuthenticationException(AuthenticationException e) {
         log.error("Login info error: {}", e.getMessage());
 
         ResponseDto<Void> responseDto = ResponseBuilder.errorResponse(
-                StatusCodeEnum.UNAUTHENTICATED.getCode(),
-                languageService.getMessage(StatusCodeEnum.UNAUTHENTICATED.getMessage()));
+                StatusCodeEnum.UNAUTHENTICATED.code,
+                languageService.getMessage(StatusCodeEnum.UNAUTHENTICATED.message));
 
         return ResponseEntity
-                .status(StatusCodeEnum.UNAUTHENTICATED.getHttpStatusCode())
+                .status(StatusCodeEnum.UNAUTHENTICATED.httpStatusCode)
                 .body(responseDto);
     }
 
@@ -51,11 +82,11 @@ public class GlobalExceptionHandler {
         log.error("Account is locked: {}", e.getMessage());
 
         ResponseDto<Void> responseDto = ResponseBuilder.errorResponse(
-                StatusCodeEnum.USER_LOCKED.getCode(),
-                languageService.getMessage(StatusCodeEnum.USER_LOCKED.getMessage()));
+                StatusCodeEnum.USER_LOCKED.code,
+                languageService.getMessage(StatusCodeEnum.USER_LOCKED.message));
 
         return ResponseEntity
-                .status(StatusCodeEnum.USER_LOCKED.getHttpStatusCode())
+                .status(StatusCodeEnum.USER_LOCKED.httpStatusCode)
                 .body(responseDto);
     }
 
@@ -64,11 +95,11 @@ public class GlobalExceptionHandler {
         log.error("Account is unactive: {}", e.getMessage());
 
         ResponseDto<Void> responseDto = ResponseBuilder.errorResponse(
-                StatusCodeEnum.USER_UNACTIVE.getCode(),
-                languageService.getMessage(StatusCodeEnum.USER_UNACTIVE.getMessage()));
+                StatusCodeEnum.USER_UNACTIVE.code,
+                languageService.getMessage(StatusCodeEnum.USER_UNACTIVE.message));
 
         return ResponseEntity
-                .status(StatusCodeEnum.USER_UNACTIVE.getHttpStatusCode())
+                .status(StatusCodeEnum.USER_UNACTIVE.httpStatusCode)
                 .body(responseDto);
     }
 
@@ -78,11 +109,11 @@ public class GlobalExceptionHandler {
         log.error("User Not Found Exception: {}", e.getMessage());
 
         ResponseDto<Void> responseDto = ResponseBuilder.errorResponse(
-                StatusCodeEnum.USER_NOT_FOUND.getCode(),
-                languageService.getMessage(StatusCodeEnum.USER_NOT_FOUND.getMessage()));
+                StatusCodeEnum.USER_NOT_FOUND.code,
+                languageService.getMessage(StatusCodeEnum.USER_NOT_FOUND.message));
 
         return ResponseEntity
-                .status(StatusCodeEnum.USER_NOT_FOUND.getHttpStatusCode())
+                .status(StatusCodeEnum.USER_NOT_FOUND.httpStatusCode)
                 .body(responseDto);
     }
 
@@ -92,11 +123,11 @@ public class GlobalExceptionHandler {
         log.error("Authorization Denied Exception: {}", e.getMessage());
 
         ResponseDto<Void> responseDto = ResponseBuilder.errorResponse(
-                StatusCodeEnum.ACCESS_DENIED.getCode(),
-                languageService.getMessage(StatusCodeEnum.ACCESS_DENIED.getMessage()));
+                StatusCodeEnum.ACCESS_DENIED.code,
+                languageService.getMessage(StatusCodeEnum.ACCESS_DENIED.message));
 
         return ResponseEntity
-                .status(StatusCodeEnum.ACCESS_DENIED.getHttpStatusCode())
+                .status(StatusCodeEnum.ACCESS_DENIED.httpStatusCode)
                 .body(responseDto);
     }
 
@@ -107,11 +138,11 @@ public class GlobalExceptionHandler {
         log.error("JWT Verification Error: {}", e.getMessage());
 
         ResponseDto<Void> responseDto = ResponseBuilder.errorResponse(
-                StatusCodeEnum.JWT_VERIFICATION_ERROR.getCode(),
-                languageService.getMessage(StatusCodeEnum.JWT_VERIFICATION_ERROR.getMessage()));
+                StatusCodeEnum.JWT_VERIFICATION_ERROR.code,
+                languageService.getMessage(StatusCodeEnum.JWT_VERIFICATION_ERROR.message));
 
         return ResponseEntity
-                .status(StatusCodeEnum.JWT_VERIFICATION_ERROR.getHttpStatusCode())
+                .status(StatusCodeEnum.JWT_VERIFICATION_ERROR.httpStatusCode)
                 .body(responseDto);
     }
 
@@ -122,11 +153,11 @@ public class GlobalExceptionHandler {
         log.error("Exception occurred: {}", e.getMessage());
 
         ResponseDto<Void> responseDto = ResponseBuilder.errorResponse(
-                StatusCodeEnum.SERVER_EXCEPTION.getCode(),
-                languageService.getMessage(StatusCodeEnum.SERVER_EXCEPTION.getMessage()));
+                StatusCodeEnum.SERVER_EXCEPTION.code,
+                languageService.getMessage(StatusCodeEnum.SERVER_EXCEPTION.message));
 
         return ResponseEntity
-                .status(StatusCodeEnum.SERVER_EXCEPTION.getHttpStatusCode())
+                .status(StatusCodeEnum.SERVER_EXCEPTION.httpStatusCode)
                 .body(responseDto);
     }
 
@@ -145,13 +176,13 @@ public class GlobalExceptionHandler {
                 ));
 
         ResponseDto<Map<String, List<String>>> responseDto = ResponseBuilder.errorResponse(
-                StatusCodeEnum.VALIDATION_ERROR.getCode(),
-                languageService.getMessage(StatusCodeEnum.VALIDATION_ERROR.getMessage()),
+                StatusCodeEnum.VALIDATION_ERROR.code,
+                languageService.getMessage(StatusCodeEnum.VALIDATION_ERROR.message),
                 errors
         );
 
         return ResponseEntity
-                .status(StatusCodeEnum.VALIDATION_ERROR.getHttpStatusCode())
+                .status(StatusCodeEnum.VALIDATION_ERROR.httpStatusCode)
                 .body(responseDto);
     }
 

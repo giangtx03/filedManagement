@@ -52,3 +52,10 @@ springdoc:
   swagger-ui:
     path: ${SWAGGER_PATH}
     enabled: true
+login:
+  max:
+    attempts: ${LOGIN_MAX_ATTEMPTS}
+
+register:
+  max:
+    attempts: ${REGISTER_MAX_ATTEMPTS}

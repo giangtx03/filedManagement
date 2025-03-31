@@ -2,6 +2,8 @@ package com.fieldmanagement.commom.model.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,11 +22,20 @@ import java.time.OffsetDateTime;
 @NoArgsConstructor
 public class BaseModel {
 
-    @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private OffsetDateTime createdAt;
 
-    @UpdateTimestamp
     @Column(name = "updated_at")
     private OffsetDateTime updatedAt;
+
+    @PrePersist
+    public void onCreat() {
+        createdAt = OffsetDateTime.now();
+        updatedAt = createdAt;
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        updatedAt = OffsetDateTime.now();
+    }
 }

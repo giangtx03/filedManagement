@@ -32,7 +32,7 @@ public class NotificationBaseModel extends BaseModel {
     String content;
 
     @Column(name = "is_read")
-    Boolean isRead;
+    boolean isRead;
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "type")

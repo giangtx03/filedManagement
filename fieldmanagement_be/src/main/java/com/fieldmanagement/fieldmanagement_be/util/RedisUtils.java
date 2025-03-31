@@ -9,6 +9,6 @@ public class RedisUtils {
         if (parts == null || parts.length == 0) {
             throw new IllegalArgumentException("Key parts cannot be null or empty");
         }
-        return String.join("_", parts);
+        return String.join(":", parts);
     }
 }
