@@ -5,6 +5,7 @@ import com.fieldmanagement.commom.exception.UserNotFoundException;
 import com.fieldmanagement.commom.model.constant.EmailConstant;
 import com.fieldmanagement.commom.model.enums.KeyTypeEnum;
 import com.fieldmanagement.fieldmanagement_be.config.jwt.JwtProvider;
+import com.fieldmanagement.fieldmanagement_be.config.security.UserDetailsImpl;
 import com.fieldmanagement.fieldmanagement_be.dao.repository.UserDetailRepo;
 import com.fieldmanagement.fieldmanagement_be.dao.repository.UserRepo;
 import com.fieldmanagement.fieldmanagement_be.model.dto.TokenDto;
@@ -27,8 +28,9 @@ import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.LockedException;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,6 +52,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final RedisTemplate<String, Object> redisTemplate;
     private final EmailService emailService;
+    private final AuthenticationManager authenticationManager;
 
     @Override
     public UserModel findByEmail(String email) {
@@ -58,24 +61,23 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public LoginResponse login(LoginRequest loginRequest) throws AuthenticationException {
-        UserModel userModel = findByEmail(loginRequest.getEmail());
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(
+                        loginRequest.getEmail(), loginRequest.getPassword()));
 
-        if (!passwordEncoder.matches(loginRequest.getPassword(), userModel.getPassword())) {
-            throw new AuthenticationException(loginRequest.getEmail() + loginRequest.getPassword());
-        }
-        if (!userModel.isActive()) {
-            throw new DisabledException(loginRequest.getEmail());
-        }
-        if (userModel.isLocked()) {
-            throw new LockedException(loginRequest.getEmail());
-        }
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        UserModel userModel = userDetails.getUser();
 
         UserDetailDto userDetailDto = userDetailRepo.findByUserId(userModel.getId())
                 .orElseThrow(() -> new UserNotFoundException(userModel.getEmail()));
         TokenDto tokenDto = jwtProvider.generateToken(userModel);
 
         UserResponse userResponse = userMapper.toResponse(userDetailDto);
-        return LoginResponse.builder().accessToken(tokenDto.getAccessToken()).refreshToken(tokenDto.getRefreshToken()).user(userResponse).build();
+        return LoginResponse.builder()
+                .accessToken(tokenDto.getAccessToken())
+                .refreshToken(tokenDto.getRefreshToken())
+                .user(userResponse)
+                .build();
     }
 
     @Transactional
