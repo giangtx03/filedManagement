@@ -35,20 +35,31 @@ public class AuthController {
     private final RedisLimitService redisLimitService;
 
     @PostMapping("/login")
-    public ResponseEntity<ResponseDto<LoginResponse>> login(@Valid @ParameterObject LoginRequest loginRequest)
-    throws AuthenticationException {
-        LoginResponse loginResponse = userService.login(loginRequest);
+    public ResponseEntity<ResponseDto<LoginResponse>> login(
+            @Valid @ParameterObject LoginRequest loginRequest
+    ) throws AuthenticationException, TooManyListenersException {
+        try {
+            if (redisLimitService.isLoginBlocked(loginRequest.getEmail())) {
+                throw new TooManyListenersException("5");
+            }
 
-        StatusCodeEnum statusCodeEnum = StatusCodeEnum.LOGIN_SUCCESSFULLY;
+            LoginResponse loginResponse = userService.login(loginRequest);
+            redisLimitService.resetLoginAttempts(loginRequest.getEmail());
 
-        ResponseDto<LoginResponse> responseDto = ResponseBuilder.okResponse(
-                statusCodeEnum.code,
-                languageService.getMessage(statusCodeEnum.message),
-                loginResponse
-        );
-        return ResponseEntity
-                .status(statusCodeEnum.httpStatusCode)
-                .body(responseDto);
+            StatusCodeEnum statusCodeEnum = StatusCodeEnum.LOGIN_SUCCESSFULLY;
+
+            ResponseDto<LoginResponse> responseDto = ResponseBuilder.okResponse(
+                    statusCodeEnum.code,
+                    languageService.getMessage(statusCodeEnum.message),
+                    loginResponse
+            );
+            return ResponseEntity
+                    .status(statusCodeEnum.httpStatusCode)
+                    .body(responseDto);
+        } catch (Exception e) {
+            redisLimitService.increaseLoginAttempts(loginRequest.getEmail());
+            throw e;
+        }
     }
 
     @PostMapping("/register")
