@@ -2,6 +2,7 @@ package com.fieldmanagement.fieldmanagement_be.exception;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.fieldmanagement.commom.exception.EmailExistsException;
+import com.fieldmanagement.commom.exception.OtpInvalidException;
 import com.fieldmanagement.commom.exception.UserNotFoundException;
 import com.fieldmanagement.commom.model.builder.ResponseBuilder;
 import com.fieldmanagement.commom.model.dto.ResponseDto;
@@ -48,7 +49,8 @@ public class GlobalExceptionHandler {
             BadCredentialsException.class, StatusCodeEnum.UNAUTHENTICATED,
             UsernameNotFoundException.class, StatusCodeEnum.UNAUTHENTICATED,
             AuthorizationDeniedException.class, StatusCodeEnum.ACCESS_DENIED,
-            JWTVerificationException.class, StatusCodeEnum.JWT_VERIFICATION_ERROR
+            JWTVerificationException.class, StatusCodeEnum.JWT_VERIFICATION_ERROR,
+            OtpInvalidException.class, StatusCodeEnum.OTP_INVALID
     );
 
     /**
@@ -59,7 +61,7 @@ public class GlobalExceptionHandler {
         LockedException.class, DisabledException.class,
         AuthenticationException.class, BadCredentialsException.class,
         AuthorizationDeniedException.class, JWTVerificationException.class,
-        UsernameNotFoundException.class
+        UsernameNotFoundException.class, OtpInvalidException.class
     })
     public ResponseEntity<ResponseDto<Void>> handleMappedExceptions(Exception e) {
         log.error("Exception occurred: {}", e.getMessage());

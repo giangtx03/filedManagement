@@ -11,9 +11,11 @@ public enum StatusCodeEnum {
 //    Auth 11xx
     LOGIN_SUCCESSFULLY(1100, "auth.login.successfully", HttpStatus.ACCEPTED),
     REGISTER_SUCCESSFULLY(1101, "auth.register.successfully", HttpStatus.CREATED),
+    ACTIVE_SUCCESSFULLY(1102, "auth.active.successfully", HttpStatus.ACCEPTED),
     UNAUTHENTICATED(1150, "auth.authenticated.error", HttpStatus.UNAUTHORIZED),
     ACCESS_DENIED(1151, "auth.access.denied", HttpStatus.FORBIDDEN),
     TOO_MANY_REQUEST(1152, "auth.too.many.request", HttpStatus.BAD_REQUEST),
+    OTP_INVALID(1153, "auth.otp.invalid", HttpStatus.BAD_REQUEST),
 //    User 12xx
     USER_LOCKED(1250, "user.locked.error", HttpStatus.BAD_REQUEST),
     USER_UNACTIVE(1251, "user.unactive.error", HttpStatus.BAD_REQUEST),
