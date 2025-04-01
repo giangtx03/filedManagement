@@ -58,7 +58,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     }
 
                     if (!userDetails.isEnabled()) {
-                        sendErrorResponse(response, StatusCodeEnum.USER_UNACTIVE);
+                        sendErrorResponse(response, StatusCodeEnum.USER_UN_ACTIVE);
                     }
 
                     UsernamePasswordAuthenticationToken authenticationToken =

@@ -15,4 +15,5 @@ public interface UserService {
     LoginResponse login(LoginRequest loginRequest) throws AuthenticationException;
     UserResponse register(RegisterRequest registerRequest) throws MessagingException;
     void activateAccount(VerifyOtpRequest request);
+    void resendEmailActive(String email) throws MessagingException;
 }

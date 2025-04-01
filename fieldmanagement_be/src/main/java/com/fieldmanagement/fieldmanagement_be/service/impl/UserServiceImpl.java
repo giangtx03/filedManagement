@@ -2,6 +2,7 @@ package com.fieldmanagement.fieldmanagement_be.service.impl;
 
 import com.fieldmanagement.commom.exception.EmailExistsException;
 import com.fieldmanagement.commom.exception.OtpInvalidException;
+import com.fieldmanagement.commom.exception.UserIsAvtiveException;
 import com.fieldmanagement.commom.exception.UserNotFoundException;
 import com.fieldmanagement.commom.model.constant.EmailConstant;
 import com.fieldmanagement.commom.model.enums.KeyTypeEnum;
@@ -119,6 +120,24 @@ public class UserServiceImpl implements UserService {
 
         redisTemplate.delete(key);
     }
+
+    @Override
+    public void resendEmailActive(String email) throws MessagingException {
+        UserModel userModel = userRepo.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("Email không tồn tại."));
+
+        if (userModel.isActive()) {
+            throw new UserIsAvtiveException(email);
+        }
+
+        String otp = OtpGenerator.createOtp();
+        saveOtp(KeyTypeEnum.ACTIVE, userModel.getEmail(), otp);
+        emailService.sendEmailAsync(userModel.getEmail(), "Xác thực tài khoản",
+                EmailConstant.OTP_MAIL, Map.of(
+                        "name", userModel.getUserDetail().getFullName(),
+                        "otp", otp));
+    }
+
 
     private void saveOtp(KeyTypeEnum keyTypeEnum, String subKey, String otp) {
         String key = RedisUtils.createKey(keyTypeEnum.value, subKey);

@@ -27,4 +27,8 @@ public class UserDetailModel extends UserDetailBaseModel {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, updatable = false, unique = true)
     UserModel user;
+
+    public String getFullName() {
+        return String.format("%s %s", this.getFirstName(), this.getLastName());
+    }
 }

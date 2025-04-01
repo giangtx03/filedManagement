@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
@@ -95,6 +96,23 @@ public class AuthController {
     ) {
         userService.activateAccount(request);
         StatusCodeEnum statusCodeEnum = StatusCodeEnum.ACTIVE_SUCCESSFULLY;
+
+        ResponseDto<Void> responseDto = ResponseBuilder.okResponse(
+                statusCodeEnum.code,
+                languageService.getMessage(statusCodeEnum.message)
+        );
+        return ResponseEntity
+                .status(statusCodeEnum.httpStatusCode)
+                .body(responseDto);
+    }
+
+    @PostMapping("/resend-otp-activation")
+    public ResponseEntity<ResponseDto<Void>> resendOtpActivation(
+            @NotBlank(message = "valid.email.notBlank") @ParameterObject String email
+    ) throws MessagingException {
+
+        userService.resendEmailActive(email);
+        StatusCodeEnum statusCodeEnum = StatusCodeEnum.SEND_OTP_SUCCESSFULLY;
 
         ResponseDto<Void> responseDto = ResponseBuilder.okResponse(
                 statusCodeEnum.code,

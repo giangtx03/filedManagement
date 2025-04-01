@@ -3,6 +3,7 @@ package com.fieldmanagement.fieldmanagement_be.exception;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.fieldmanagement.commom.exception.EmailExistsException;
 import com.fieldmanagement.commom.exception.OtpInvalidException;
+import com.fieldmanagement.commom.exception.UserIsAvtiveException;
 import com.fieldmanagement.commom.exception.UserNotFoundException;
 import com.fieldmanagement.commom.model.builder.ResponseBuilder;
 import com.fieldmanagement.commom.model.dto.ResponseDto;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.security.sasl.AuthenticationException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TooManyListenersException;
@@ -40,18 +42,21 @@ public class GlobalExceptionHandler {
      * Ánh xạ các exception với mã lỗi tương ứng.
      */
     private static final Map<Class<? extends Exception>, StatusCodeEnum>
-            EXCEPTION_STATUS_MAP = Map.of(
-            EmailExistsException.class, StatusCodeEnum.EMAIL_IS_EXISTS,
-            UserNotFoundException.class, StatusCodeEnum.USER_NOT_FOUND,
-            LockedException.class, StatusCodeEnum.USER_LOCKED,
-            DisabledException.class, StatusCodeEnum.USER_UNACTIVE,
-            AuthenticationException.class, StatusCodeEnum.UNAUTHENTICATED,
-            BadCredentialsException.class, StatusCodeEnum.UNAUTHENTICATED,
-            UsernameNotFoundException.class, StatusCodeEnum.UNAUTHENTICATED,
-            AuthorizationDeniedException.class, StatusCodeEnum.ACCESS_DENIED,
-            JWTVerificationException.class, StatusCodeEnum.JWT_VERIFICATION_ERROR,
-            OtpInvalidException.class, StatusCodeEnum.OTP_INVALID
-    );
+            EXCEPTION_STATUS_MAP = new HashMap<>();
+
+    static {
+        EXCEPTION_STATUS_MAP.put(EmailExistsException.class, StatusCodeEnum.EMAIL_IS_EXISTS);
+        EXCEPTION_STATUS_MAP.put(UserNotFoundException.class, StatusCodeEnum.USER_NOT_FOUND);
+        EXCEPTION_STATUS_MAP.put(LockedException.class, StatusCodeEnum.USER_LOCKED);
+        EXCEPTION_STATUS_MAP.put(DisabledException.class, StatusCodeEnum.USER_UN_ACTIVE);
+        EXCEPTION_STATUS_MAP.put(AuthenticationException.class, StatusCodeEnum.UNAUTHENTICATED);
+        EXCEPTION_STATUS_MAP.put(BadCredentialsException.class, StatusCodeEnum.UNAUTHENTICATED);
+        EXCEPTION_STATUS_MAP.put(UsernameNotFoundException.class, StatusCodeEnum.UNAUTHENTICATED);
+        EXCEPTION_STATUS_MAP.put(AuthorizationDeniedException.class, StatusCodeEnum.ACCESS_DENIED);
+        EXCEPTION_STATUS_MAP.put(JWTVerificationException.class, StatusCodeEnum.JWT_VERIFICATION_ERROR);
+        EXCEPTION_STATUS_MAP.put(OtpInvalidException.class, StatusCodeEnum.OTP_INVALID);
+        EXCEPTION_STATUS_MAP.put(UserIsAvtiveException.class, StatusCodeEnum.USER_IS_ACTIVE);
+    }
 
     /**
      * Xử lý chung cho các exception có trong EXCEPTION_STATUS_MAP.
@@ -61,7 +66,8 @@ public class GlobalExceptionHandler {
         LockedException.class, DisabledException.class,
         AuthenticationException.class, BadCredentialsException.class,
         AuthorizationDeniedException.class, JWTVerificationException.class,
-        UsernameNotFoundException.class, OtpInvalidException.class
+        UsernameNotFoundException.class, OtpInvalidException.class,
+        UserIsAvtiveException.class
     })
     public ResponseEntity<ResponseDto<Void>> handleMappedExceptions(Exception e) {
         log.error("Exception occurred: {}", e.getMessage());
