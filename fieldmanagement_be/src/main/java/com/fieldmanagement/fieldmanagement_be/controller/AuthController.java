@@ -6,6 +6,7 @@ import com.fieldmanagement.commom.model.enums.StatusCodeEnum;
 import com.fieldmanagement.fieldmanagement_be.config.language.LanguageService;
 import com.fieldmanagement.fieldmanagement_be.model.request.LoginRequest;
 import com.fieldmanagement.fieldmanagement_be.model.request.RegisterRequest;
+import com.fieldmanagement.fieldmanagement_be.model.request.VerifyOtpRequest;
 import com.fieldmanagement.fieldmanagement_be.model.response.LoginResponse;
 import com.fieldmanagement.fieldmanagement_be.model.response.UserResponse;
 import com.fieldmanagement.fieldmanagement_be.service.RedisLimitService;
@@ -82,6 +83,22 @@ public class AuthController {
                 statusCodeEnum.code,
                 languageService.getMessage(statusCodeEnum.message),
                 userResponse
+        );
+        return ResponseEntity
+                .status(statusCodeEnum.httpStatusCode)
+                .body(responseDto);
+    }
+
+    @PostMapping("/verify-activation")
+    public ResponseEntity<ResponseDto<Void>> verifyActivation(
+            @Valid @ParameterObject VerifyOtpRequest request
+    ) {
+        userService.activateAccount(request);
+        StatusCodeEnum statusCodeEnum = StatusCodeEnum.ACTIVE_SUCCESSFULLY;
+
+        ResponseDto<Void> responseDto = ResponseBuilder.okResponse(
+                statusCodeEnum.code,
+                languageService.getMessage(statusCodeEnum.message)
         );
         return ResponseEntity
                 .status(statusCodeEnum.httpStatusCode)

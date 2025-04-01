@@ -1,6 +1,7 @@
 package com.fieldmanagement.fieldmanagement_be.service.impl;
 
 import com.fieldmanagement.commom.exception.EmailExistsException;
+import com.fieldmanagement.commom.exception.OtpInvalidException;
 import com.fieldmanagement.commom.exception.UserNotFoundException;
 import com.fieldmanagement.commom.model.constant.EmailConstant;
 import com.fieldmanagement.commom.model.enums.KeyTypeEnum;
@@ -15,6 +16,7 @@ import com.fieldmanagement.fieldmanagement_be.model.entity.UserModel;
 import com.fieldmanagement.fieldmanagement_be.model.mapper.UserMapper;
 import com.fieldmanagement.fieldmanagement_be.model.request.LoginRequest;
 import com.fieldmanagement.fieldmanagement_be.model.request.RegisterRequest;
+import com.fieldmanagement.fieldmanagement_be.model.request.VerifyOtpRequest;
 import com.fieldmanagement.fieldmanagement_be.model.response.LoginResponse;
 import com.fieldmanagement.fieldmanagement_be.model.response.UserResponse;
 import com.fieldmanagement.fieldmanagement_be.service.EmailService;
@@ -96,12 +98,37 @@ public class UserServiceImpl implements UserService {
         UserResponse userResponse = userMapper.toResponse(saveUserDetailModel);
 
         String otp = OtpGenerator.createOtp();
-        String key = RedisUtils.createKey(userModel.getId(), KeyTypeEnum.ACTIVE.value);
-        redisTemplate.opsForValue().set(key, otp, KeyTypeEnum.ACTIVE.time, TimeUnit.MINUTES);
-        log.info("OTP của user {} : {}", userModel.getEmail(),
-                Objects.requireNonNull(redisTemplate.opsForValue().get(key)));
+        saveOtp(KeyTypeEnum.ACTIVE, userModel.getEmail(), otp);
         emailService.sendEmailAsync(userModel.getEmail(), "Xác thực đăng ký tài khoản",
                 EmailConstant.OTP_MAIL, Map.of("name", userResponse.getFullName(), "otp", otp));
         return userResponse;
+    }
+
+    @Transactional
+    @Override
+    public void activateAccount(VerifyOtpRequest request) {
+        String key = RedisUtils.createKey(KeyTypeEnum.ACTIVE.value, request.getEmail());
+        if (!validateOtp(key, request.getOtp())) {
+            throw new OtpInvalidException("Otp invalid");
+        }
+
+        UserModel userModel = userRepo.findByEmail(request.getEmail())
+                .orElseThrow(() -> new UserNotFoundException("User not found !!!"));
+        userModel.setActive(true);
+        userRepo.save(userModel);
+
+        redisTemplate.delete(key);
+    }
+
+    private void saveOtp(KeyTypeEnum keyTypeEnum, String subKey, String otp) {
+        String key = RedisUtils.createKey(keyTypeEnum.value, subKey);
+        redisTemplate.opsForValue().set(key, otp, keyTypeEnum.time, TimeUnit.MINUTES);
+        log.info("OTP của user {} : {}", subKey,
+                Objects.requireNonNull(redisTemplate.opsForValue().get(key)));
+    }
+
+    private boolean validateOtp(String key, String otp) {
+        Object storedOtp = redisTemplate.opsForValue().get(key);
+        return storedOtp != null && otp.equals(storedOtp.toString());
     }
 }
