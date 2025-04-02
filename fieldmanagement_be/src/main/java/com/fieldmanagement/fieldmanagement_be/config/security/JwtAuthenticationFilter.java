@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,6 +38,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final LanguageService languageService;
     private final UserDetailsService userDetailsService;
 
+    @Value("${jwt.accessKey}")
+    private String accessKey;
+
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
@@ -46,7 +50,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             String accessToken = extractToken(request);
             if (accessToken != null) {
-                DecodedJWT decodeToken = jwtProvider.decodeToken(accessToken);
+                DecodedJWT decodeToken = jwtProvider.decodeToken(accessToken, accessKey);
                 String email = decodeToken.getSubject();
 
                 if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {

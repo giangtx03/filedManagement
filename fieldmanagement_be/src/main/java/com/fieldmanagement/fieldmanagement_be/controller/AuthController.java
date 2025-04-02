@@ -6,6 +6,7 @@ import com.fieldmanagement.commom.model.enums.StatusCodeEnum;
 import com.fieldmanagement.fieldmanagement_be.config.language.LanguageService;
 import com.fieldmanagement.fieldmanagement_be.model.request.LoginRequest;
 import com.fieldmanagement.fieldmanagement_be.model.request.RegisterRequest;
+import com.fieldmanagement.fieldmanagement_be.model.request.SetPasswordRequest;
 import com.fieldmanagement.fieldmanagement_be.model.request.VerifyOtpRequest;
 import com.fieldmanagement.fieldmanagement_be.model.response.LoginResponse;
 import com.fieldmanagement.fieldmanagement_be.model.response.UserResponse;
@@ -108,11 +109,72 @@ public class AuthController {
 
     @PostMapping("/resend-otp-activation")
     public ResponseEntity<ResponseDto<Void>> resendOtpActivation(
-            @NotBlank(message = "valid.email.notBlank") @ParameterObject String email
-    ) throws MessagingException {
+            @NotBlank(message = "valid.email.notBlank") @ParameterObject String email,
+            HttpServletRequest request
+    ) throws MessagingException, TooManyListenersException {
+        String ipAddress = request.getRemoteAddr();
+        if (redisLimitService.isRequestBlocked(ipAddress)) {
+            throw new TooManyListenersException("10");
+        }
 
         userService.resendEmailActive(email);
+        redisLimitService.increaseRequestAttempts(ipAddress);
         StatusCodeEnum statusCodeEnum = StatusCodeEnum.SEND_OTP_SUCCESSFULLY;
+
+        ResponseDto<Void> responseDto = ResponseBuilder.okResponse(
+                statusCodeEnum.code,
+                languageService.getMessage(statusCodeEnum.message)
+        );
+        return ResponseEntity
+                .status(statusCodeEnum.httpStatusCode)
+                .body(responseDto);
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<ResponseDto<Void>> forgotPassword(
+            @NotBlank(message = "valid.email.notBlank") @ParameterObject String email,
+            HttpServletRequest request
+    ) throws MessagingException, TooManyListenersException {
+        String ipAddress = request.getRemoteAddr();
+        if (redisLimitService.isRequestBlocked(ipAddress)) {
+            throw new TooManyListenersException("10");
+        }
+        userService.forgotPassword(email);
+        redisLimitService.increaseRequestAttempts(ipAddress);
+        StatusCodeEnum statusCodeEnum = StatusCodeEnum.SEND_OTP_SUCCESSFULLY;
+
+        ResponseDto<Void> responseDto = ResponseBuilder.okResponse(
+                statusCodeEnum.code,
+                languageService.getMessage(statusCodeEnum.message)
+        );
+        return ResponseEntity
+                .status(statusCodeEnum.httpStatusCode)
+                .body(responseDto);
+    }
+
+    @PostMapping("/verify-otp-forgot-password")
+    public ResponseEntity<ResponseDto<String>> verifyOtpForgotPassword(
+            @Valid @ParameterObject VerifyOtpRequest request
+    ) {
+        String token = userService.verifyOtpForgotPassword(request);
+        StatusCodeEnum statusCodeEnum = StatusCodeEnum.OTP_VALID;
+
+        ResponseDto<String> responseDto = ResponseBuilder.okResponse(
+                statusCodeEnum.code,
+                languageService.getMessage(statusCodeEnum.message),
+                token
+        );
+        return ResponseEntity
+                .status(statusCodeEnum.httpStatusCode)
+                .body(responseDto);
+    }
+
+    @PostMapping("/set-password")
+    public ResponseEntity<ResponseDto<Void>> setPassword(
+            @Valid @ParameterObject SetPasswordRequest request
+    ) {
+        userService.setPassword(request);
+        StatusCodeEnum statusCodeEnum = StatusCodeEnum.CHANGE_PASSWORD_SUCCESSFULLY;
 
         ResponseDto<Void> responseDto = ResponseBuilder.okResponse(
                 statusCodeEnum.code,
