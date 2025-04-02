@@ -11,4 +11,7 @@ public interface RedisLimitService {
 
     void increaseRegisterAttempts(String ip);
 
+    boolean isRequestBlocked(String ip);
+
+    void increaseRequestAttempts(String ip);
 }

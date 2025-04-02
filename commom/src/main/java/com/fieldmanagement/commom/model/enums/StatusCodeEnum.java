@@ -13,6 +13,8 @@ public enum StatusCodeEnum {
     REGISTER_SUCCESSFULLY(1101, "auth.register.successfully", HttpStatus.CREATED),
     ACTIVE_SUCCESSFULLY(1102, "auth.active.successfully", HttpStatus.ACCEPTED),
     SEND_OTP_SUCCESSFULLY(1103, "auth.send.otp.successfully", HttpStatus.ACCEPTED),
+    OTP_VALID(1104, "auth.otp.valid", HttpStatus.ACCEPTED),
+    CHANGE_PASSWORD_SUCCESSFULLY(1105, "auth.change.password.successfully", HttpStatus.ACCEPTED),
     UNAUTHENTICATED(1150, "auth.authenticated.error", HttpStatus.UNAUTHORIZED),
     ACCESS_DENIED(1151, "auth.access.denied", HttpStatus.FORBIDDEN),
     TOO_MANY_REQUEST(1152, "auth.too.many.request", HttpStatus.BAD_REQUEST),

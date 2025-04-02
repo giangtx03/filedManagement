@@ -1,5 +1,7 @@
 package com.fieldmanagement.fieldmanagement_be.service.impl;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fieldmanagement.commom.exception.EmailExistsException;
 import com.fieldmanagement.commom.exception.OtpInvalidException;
 import com.fieldmanagement.commom.exception.UserIsAvtiveException;
@@ -17,6 +19,7 @@ import com.fieldmanagement.fieldmanagement_be.model.entity.UserModel;
 import com.fieldmanagement.fieldmanagement_be.model.mapper.UserMapper;
 import com.fieldmanagement.fieldmanagement_be.model.request.LoginRequest;
 import com.fieldmanagement.fieldmanagement_be.model.request.RegisterRequest;
+import com.fieldmanagement.fieldmanagement_be.model.request.SetPasswordRequest;
 import com.fieldmanagement.fieldmanagement_be.model.request.VerifyOtpRequest;
 import com.fieldmanagement.fieldmanagement_be.model.response.LoginResponse;
 import com.fieldmanagement.fieldmanagement_be.model.response.UserResponse;
@@ -30,6 +33,7 @@ import com.fieldmanagement.fieldmanagement_be.util.RedisUtils;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -56,6 +60,12 @@ public class UserServiceImpl implements UserService {
     private final RedisTemplate<String, Object> redisTemplate;
     private final EmailService emailService;
     private final AuthenticationManager authenticationManager;
+
+    @Value("${jwt.resetPasswordKey}")
+    private String resetPasswordKey;
+
+    @Value("${jwt.expiration.time.resetPassword}")
+    private long timeResetPassword;
 
     @Override
     public UserModel findByEmail(String email) {
@@ -136,6 +146,51 @@ public class UserServiceImpl implements UserService {
                 EmailConstant.OTP_MAIL, Map.of(
                         "name", userModel.getUserDetail().getFullName(),
                         "otp", otp));
+    }
+
+    @Override
+    public void forgotPassword(String email) throws MessagingException {
+        UserModel userModel = userRepo.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("Email không tồn tại."));
+
+        String otp = OtpGenerator.createOtp();
+        saveOtp(KeyTypeEnum.FORGOT_PASSWORD, userModel.getEmail(), otp);
+        emailService.sendEmailAsync(userModel.getEmail(), "Đặt lại mật khẩu",
+                EmailConstant.OTP_MAIL, Map.of(
+                        "name", userModel.getUserDetail().getFullName(),
+                        "otp", otp));
+    }
+
+    @Override
+    public String verifyOtpForgotPassword(VerifyOtpRequest request) {
+        UserModel userModel = userRepo.findByEmail(request.getEmail())
+                .orElseThrow(() -> new UserNotFoundException("Email không tồn tại."));
+
+        String key = RedisUtils.createKey(KeyTypeEnum.FORGOT_PASSWORD.value, request.getEmail());
+        if (!validateOtp(key, request.getOtp())) {
+            throw new OtpInvalidException("Otp invalid");
+        }
+        redisTemplate.delete(key);
+        return jwtProvider.generateToken(userModel, resetPasswordKey, timeResetPassword);
+    }
+
+    @Transactional
+    @Override
+    public void setPassword(SetPasswordRequest request) {
+        String key = RedisUtils.createKey(KeyTypeEnum.BLACKLIST_TOKEN.value, request.getToken());
+        if (redisTemplate.hasKey(key)) {
+            throw new JWTVerificationException("Invalid token set password");
+        }
+        DecodedJWT decodeToken = jwtProvider.decodeToken(request.getToken(), resetPasswordKey);
+        String email = decodeToken.getSubject();
+
+        UserModel userModel = userRepo.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("Email không tồn tại."));
+
+        userModel.setPassword(passwordEncoder.encode(request.getPassword()));
+        userRepo.save(userModel);
+        redisTemplate.opsForValue().set(key, "invalid",
+                KeyTypeEnum.BLACKLIST_TOKEN.time, TimeUnit.MINUTES);
     }
 
 
