@@ -29,4 +29,6 @@ public interface UserService {
     String verifyOtpForgotPassword(@Valid VerifyOtpRequest request);
 
     void setPassword(@Valid SetPasswordRequest request);
+
+    String refreshToken(String refreshToken);
 }

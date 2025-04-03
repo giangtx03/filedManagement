@@ -61,11 +61,16 @@ public class UserServiceImpl implements UserService {
     private final EmailService emailService;
     private final AuthenticationManager authenticationManager;
 
+    @Value("${jwt.accessKey}")
+    private String accessKey;
+    @Value("${jwt.refreshKey}")
+    private String refreshKey;
     @Value("${jwt.resetPasswordKey}")
     private String resetPasswordKey;
-
     @Value("${jwt.expiration.time.resetPassword}")
     private long timeResetPassword;
+    @Value("${jwt.expiration.time.access}")
+    private long timeAccess;
 
     @Override
     public UserModel findByEmail(String email) {
@@ -193,6 +198,21 @@ public class UserServiceImpl implements UserService {
                 KeyTypeEnum.BLACKLIST_TOKEN.time, TimeUnit.MINUTES);
     }
 
+    @Override
+    public String refreshToken(String refreshToken) {
+        String key = RedisUtils.createKey(KeyTypeEnum.BLACKLIST_TOKEN.value, refreshToken);
+        if (redisTemplate.hasKey(key)) {
+            throw new JWTVerificationException("Invalid refresh token");
+        }
+
+        DecodedJWT decodeToken = jwtProvider.decodeToken(refreshToken, refreshKey);
+        String email = decodeToken.getSubject();
+
+        UserModel userModel = userRepo.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("Email không tồn tại."));
+
+        return jwtProvider.generateToken(userModel, accessKey, timeAccess);
+    }
 
     private void saveOtp(KeyTypeEnum keyTypeEnum, String subKey, String otp) {
         String key = RedisUtils.createKey(keyTypeEnum.value, subKey);

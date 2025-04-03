@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -179,6 +180,23 @@ public class AuthController {
         ResponseDto<Void> responseDto = ResponseBuilder.okResponse(
                 statusCodeEnum.code,
                 languageService.getMessage(statusCodeEnum.message)
+        );
+        return ResponseEntity
+                .status(statusCodeEnum.httpStatusCode)
+                .body(responseDto);
+    }
+
+    @PostMapping("/refresh-token")
+    public ResponseEntity<ResponseDto<String>> refreshToken(
+            @NotBlank @RequestHeader("RefreshToken") String refreshToken
+    ) {
+        String accessToken = userService.refreshToken(refreshToken);
+        StatusCodeEnum statusCodeEnum = StatusCodeEnum.REQUEST_SUCCESSFULLY;
+
+        ResponseDto<String> responseDto = ResponseBuilder.okResponse(
+                statusCodeEnum.code,
+                languageService.getMessage(statusCodeEnum.message),
+                accessToken
         );
         return ResponseEntity
                 .status(statusCodeEnum.httpStatusCode)
