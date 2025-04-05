@@ -18,6 +18,7 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -56,6 +57,7 @@ public class GlobalExceptionHandler {
         EXCEPTION_STATUS_MAP.put(JWTVerificationException.class, StatusCodeEnum.JWT_VERIFICATION_ERROR);
         EXCEPTION_STATUS_MAP.put(OtpInvalidException.class, StatusCodeEnum.OTP_INVALID);
         EXCEPTION_STATUS_MAP.put(UserIsAvtiveException.class, StatusCodeEnum.USER_IS_ACTIVE);
+        EXCEPTION_STATUS_MAP.put(OAuth2AuthenticationException.class, StatusCodeEnum.OAUTH2_AUTHENTICATION_ERROR);
     }
 
     /**
@@ -67,7 +69,7 @@ public class GlobalExceptionHandler {
         AuthenticationException.class, BadCredentialsException.class,
         AuthorizationDeniedException.class, JWTVerificationException.class,
         UsernameNotFoundException.class, OtpInvalidException.class,
-        UserIsAvtiveException.class
+        UserIsAvtiveException.class, OAuth2AuthenticationException.class
     })
     public ResponseEntity<ResponseDto<Void>> handleMappedExceptions(Exception e) {
         log.error("Exception occurred: {}", e.getMessage());

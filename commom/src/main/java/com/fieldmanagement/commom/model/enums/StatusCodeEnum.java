@@ -20,6 +20,7 @@ public enum StatusCodeEnum {
     ACCESS_DENIED(1151, "auth.access.denied", HttpStatus.FORBIDDEN),
     TOO_MANY_REQUEST(1152, "auth.too.many.request", HttpStatus.BAD_REQUEST),
     OTP_INVALID(1153, "auth.otp.invalid", HttpStatus.BAD_REQUEST),
+    OAUTH2_AUTHENTICATION_ERROR(1154, "auth.oauth2.authenticated.error", HttpStatus.UNAUTHORIZED),
 //    User 12xx
     USER_LOCKED(1250, "user.locked.error", HttpStatus.BAD_REQUEST),
     USER_UN_ACTIVE(1251, "user.un_active.error", HttpStatus.BAD_REQUEST),

@@ -30,7 +30,7 @@ public class UserDetailBaseModel extends BaseModel {
     @Column(name = "first_name", length = 64, nullable = false)
     String firstName;
 
-    @Column(name = "last_name", length = 64, nullable = false)
+    @Column(name = "last_name", length = 64)
     String lastName;
 
     @Column(name = "avatar")
@@ -39,7 +39,7 @@ public class UserDetailBaseModel extends BaseModel {
     @Column(name = "dob")
     LocalDate dob;
 
-    @Column(name = "phone_number", length = 16, nullable = false)
+    @Column(name = "phone_number", length = 16)
     String phoneNumber;
 
     @Column(name = "address")

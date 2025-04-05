@@ -24,8 +24,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        String ROLE_PREFIX = "ROLE_";
-        return List.of(new SimpleGrantedAuthority(ROLE_PREFIX + user.getRole()));
+        return List.of(new SimpleGrantedAuthority(user.getRole().getAuthority()));
     }
 
     @Override
