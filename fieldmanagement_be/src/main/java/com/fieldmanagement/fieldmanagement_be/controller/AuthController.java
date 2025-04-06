@@ -2,6 +2,7 @@ package com.fieldmanagement.fieldmanagement_be.controller;
 
 import com.fieldmanagement.commom.model.builder.ResponseBuilder;
 import com.fieldmanagement.commom.model.dto.ResponseDto;
+import com.fieldmanagement.commom.model.enums.ProviderEnum;
 import com.fieldmanagement.commom.model.enums.StatusCodeEnum;
 import com.fieldmanagement.fieldmanagement_be.config.language.LanguageService;
 import com.fieldmanagement.fieldmanagement_be.model.request.LoginRequest;
@@ -15,17 +16,22 @@ import com.fieldmanagement.fieldmanagement_be.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.security.sasl.AuthenticationException;
+import java.io.IOException;
 import java.util.TooManyListenersException;
 
 @RestController
@@ -201,5 +207,17 @@ public class AuthController {
         return ResponseEntity
                 .status(statusCodeEnum.httpStatusCode)
                 .body(responseDto);
+    }
+
+    @GetMapping("/social-login/{provider}")
+    public void getOAuth2LoginUrl(
+            @PathVariable String provider, HttpServletResponse response
+    ) throws IOException {
+        if (!ProviderEnum.isValid(provider)) {
+            throw new OAuth2AuthenticationException("Invalid provider: " + provider);
+        }
+
+        String redirectUri = "/oauth2/authorization/" + provider.toLowerCase();
+        response.sendRedirect(redirectUri);
     }
 }

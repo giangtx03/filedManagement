@@ -9,6 +9,10 @@ public enum RoleEnum {
         this.value = value;
     }
 
+    public String getAuthority() {
+        return "ROLE_" + this.name();
+    }
+
     public static RoleEnum fromValue(int value) {
         for (RoleEnum roleEnum : RoleEnum.values()) {
             if (roleEnum.value == value) {
