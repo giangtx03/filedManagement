@@ -22,6 +22,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -219,5 +220,22 @@ public class AuthController {
 
         String redirectUri = "/oauth2/authorization/" + provider.toLowerCase();
         response.sendRedirect(redirectUri);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/logout")
+    public ResponseEntity<ResponseDto<Void>> logout(
+            @NotBlank @RequestHeader("RefreshToken") String refreshToken
+    ) {
+        userService.logout(refreshToken);
+        StatusCodeEnum statusCodeEnum = StatusCodeEnum.REQUEST_SUCCESSFULLY;
+
+        ResponseDto<Void> responseDto = ResponseBuilder.okResponse(
+                statusCodeEnum.code,
+                languageService.getMessage(statusCodeEnum.message)
+        );
+        return ResponseEntity
+                .status(statusCodeEnum.httpStatusCode)
+                .body(responseDto);
     }
 }

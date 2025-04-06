@@ -31,4 +31,6 @@ public interface UserService {
     void setPassword(@Valid SetPasswordRequest request);
 
     String refreshToken(String refreshToken);
+
+    void logout(String refreshToken);
 }

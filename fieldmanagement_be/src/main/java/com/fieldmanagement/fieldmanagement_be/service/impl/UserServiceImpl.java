@@ -30,6 +30,7 @@ import javax.security.sasl.AuthenticationException;
 
 import com.fieldmanagement.fieldmanagement_be.util.OtpGenerator;
 import com.fieldmanagement.fieldmanagement_be.util.RedisUtils;
+import com.fieldmanagement.fieldmanagement_be.util.SecurityUtils;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +39,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -212,6 +214,15 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UserNotFoundException("Email không tồn tại."));
 
         return jwtProvider.generateToken(userModel, accessKey, timeAccess);
+    }
+
+    @Override
+    public void logout(String refreshToken) {
+        String key = RedisUtils.createKey(KeyTypeEnum.BLACKLIST_TOKEN.value, refreshToken);
+        redisTemplate.opsForValue().set(key, "invalid",
+                KeyTypeEnum.BLACKLIST_TOKEN.time, TimeUnit.MINUTES);
+
+        SecurityContextHolder.getContext().setAuthentication(null);
     }
 
     private void saveOtp(KeyTypeEnum keyTypeEnum, String subKey, String otp) {
