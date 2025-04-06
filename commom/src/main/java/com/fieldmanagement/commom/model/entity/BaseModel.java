@@ -9,8 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
 
 import java.time.OffsetDateTime;
 
@@ -20,6 +20,8 @@ import java.time.OffsetDateTime;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
+@FilterDef(name = "softDeleteFilter")
+@Filter(name = "softDeleteFilter", condition = "deleted_at IS NULL")
 public class BaseModel {
 
     @Column(name = "created_at", updatable = false)
@@ -27,6 +29,9 @@ public class BaseModel {
 
     @Column(name = "updated_at")
     private OffsetDateTime updatedAt;
+
+    @Column(name = "deleted_at")
+    private OffsetDateTime deletedAt;
 
     @PrePersist
     public void onCreat() {
