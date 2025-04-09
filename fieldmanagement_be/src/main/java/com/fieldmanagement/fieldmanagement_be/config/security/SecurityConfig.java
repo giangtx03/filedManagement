@@ -1,6 +1,7 @@
 package com.fieldmanagement.fieldmanagement_be.config.security;
 
 import com.fieldmanagement.fieldmanagement_be.config.oauth2.CustomAuthenticationSuccessHandler;
+import com.fieldmanagement.fieldmanagement_be.config.oauth2.CustomOAuth2FailureHandler;
 import com.fieldmanagement.fieldmanagement_be.config.oauth2.CustomOAuth2UserService;
 import com.fieldmanagement.fieldmanagement_be.exception.JwtAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,7 @@ public class SecurityConfig {
     private final JwtAuthenticationEntryPoint authenticationEntryPoint;
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+    private final CustomOAuth2FailureHandler customOAuth2FailureHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(
@@ -48,6 +50,7 @@ public class SecurityConfig {
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(customOAuth2UserService))
                         .successHandler(customAuthenticationSuccessHandler)
+                        .failureHandler(customOAuth2FailureHandler)
                 )
                 .exceptionHandling(ex ->
                         ex.authenticationEntryPoint(authenticationEntryPoint));

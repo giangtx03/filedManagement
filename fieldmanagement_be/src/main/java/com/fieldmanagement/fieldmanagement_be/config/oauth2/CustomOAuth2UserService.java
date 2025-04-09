@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +30,13 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(
                 registrationId, oAuth2User.getAttributes());
+
+        if (oAuth2User.getAttributes().get("email") == null) {
+            throw new OAuth2AuthenticationException(
+                    new OAuth2Error("email_not_found"),
+                    "Auth 2.0 không cung cấp email. Vui lòng dùng cách đăng nhập khác."
+            );
+        }
 
         UserModel userModel = userRepo.findByEmail(oAuth2UserInfo.getEmail())
                 .orElseGet(() -> {

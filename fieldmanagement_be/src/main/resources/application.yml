@@ -43,13 +43,15 @@ spring:
             scope:
             - profile
             - email
-#          facebook:
-#            client-id: ${FACEBOOK_CLIENT_ID}
-#            client-secret: ${FACEBOOK_CLIENT_SECRET}
-#            scope:
-#            - public_profile
-#            - email
-#            - user_mobile_phone
+          facebook:
+            client-id: ${FACEBOOK_CLIENT_ID}
+            client-secret: ${FACEBOOK_CLIENT_SECRET}
+            scope:
+            - public_profile
+            - email
+        provider:
+          facebook:
+            user-info-uri: https://graph.facebook.com/me?fields=id,name,email,picture
 server:
   port: ${SERVER_PORT}
 api:
