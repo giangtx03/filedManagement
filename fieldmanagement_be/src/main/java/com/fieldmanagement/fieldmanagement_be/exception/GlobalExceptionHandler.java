@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.security.sasl.AuthenticationException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +59,7 @@ public class GlobalExceptionHandler {
         EXCEPTION_STATUS_MAP.put(OtpInvalidException.class, StatusCodeEnum.OTP_INVALID);
         EXCEPTION_STATUS_MAP.put(UserIsAvtiveException.class, StatusCodeEnum.USER_IS_ACTIVE);
         EXCEPTION_STATUS_MAP.put(OAuth2AuthenticationException.class, StatusCodeEnum.OAUTH2_AUTHENTICATION_ERROR);
+        EXCEPTION_STATUS_MAP.put(IOException.class, StatusCodeEnum.FILE_ERROR);
     }
 
     /**
@@ -69,7 +71,8 @@ public class GlobalExceptionHandler {
         AuthenticationException.class, BadCredentialsException.class,
         AuthorizationDeniedException.class, JWTVerificationException.class,
         UsernameNotFoundException.class, OtpInvalidException.class,
-        UserIsAvtiveException.class, OAuth2AuthenticationException.class
+        UserIsAvtiveException.class, OAuth2AuthenticationException.class,
+        IOException.class
     })
     public ResponseEntity<ResponseDto<Void>> handleMappedExceptions(Exception e) {
         log.error("Exception occurred: {}", e.getMessage());

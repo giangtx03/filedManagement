@@ -1,4 +1,4 @@
-package com.fieldmanagement.fieldmanagement_be.model.request;
+package com.fieldmanagement.fieldmanagement_be.model.request.auth;
 
 import com.fieldmanagement.commom.annotation.ValidPassword;
 import jakarta.validation.constraints.NotBlank;

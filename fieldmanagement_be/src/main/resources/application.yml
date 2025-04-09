@@ -52,6 +52,10 @@ spring:
         provider:
           facebook:
             user-info-uri: https://graph.facebook.com/me?fields=id,name,email,picture
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
 server:
   port: ${SERVER_PORT}
 api:
@@ -84,3 +88,7 @@ register:
 request:
   max:
     attempts: ${REQUEST_MAX_ATTEMPTS}
+
+images:
+  path: ${IMAGES_PATH:uploads}
+  base-url: ${IMAGES_BASE_URL:http://localhost:8080/images/}

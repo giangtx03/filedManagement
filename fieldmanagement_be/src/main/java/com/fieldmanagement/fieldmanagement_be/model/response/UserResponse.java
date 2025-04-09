@@ -1,5 +1,6 @@
 package com.fieldmanagement.fieldmanagement_be.model.response;
 
+import com.fieldmanagement.fieldmanagement_be.config.file.ImageField;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,6 +18,7 @@ import java.time.OffsetDateTime;
 public class UserResponse {
     private String id;
     private String fullName;
+    @ImageField
     private String avatar;
     private String address;
     private LocalDate dob;

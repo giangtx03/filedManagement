@@ -1,4 +1,4 @@
-package com.fieldmanagement.fieldmanagement_be.model.request;
+package com.fieldmanagement.fieldmanagement_be.model.request.auth;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

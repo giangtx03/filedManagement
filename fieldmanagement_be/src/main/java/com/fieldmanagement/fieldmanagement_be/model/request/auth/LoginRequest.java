@@ -1,4 +1,4 @@
-package com.fieldmanagement.fieldmanagement_be.model.request;
+package com.fieldmanagement.fieldmanagement_be.model.request.auth;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.constraints.NotBlank;
