@@ -12,7 +12,7 @@ import com.fieldmanagement.fieldmanagement_be.model.request.VerifyOtpRequest;
 import com.fieldmanagement.fieldmanagement_be.model.response.LoginResponse;
 import com.fieldmanagement.fieldmanagement_be.model.response.UserResponse;
 import com.fieldmanagement.fieldmanagement_be.service.RedisLimitService;
-import com.fieldmanagement.fieldmanagement_be.service.UserService;
+import com.fieldmanagement.fieldmanagement_be.service.AuthService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -41,7 +41,7 @@ import java.util.TooManyListenersException;
 @Tag(name = "Auth", description = "Registration login processing controller")
 public class AuthController {
 
-    private final UserService userService;
+    private final AuthService authService;
     private final LanguageService languageService;
     private final RedisLimitService redisLimitService;
 
@@ -54,7 +54,7 @@ public class AuthController {
                 throw new TooManyListenersException("5");
             }
 
-            LoginResponse loginResponse = userService.login(loginRequest);
+            LoginResponse loginResponse = authService.login(loginRequest);
             redisLimitService.resetLoginAttempts(loginRequest.getEmail());
 
             StatusCodeEnum statusCodeEnum = StatusCodeEnum.LOGIN_SUCCESSFULLY;
@@ -84,7 +84,7 @@ public class AuthController {
             throw new TooManyListenersException("60");
         }
 
-        UserResponse userResponse = userService.register(registerRequest);
+        UserResponse userResponse = authService.register(registerRequest);
         redisLimitService.increaseRegisterAttempts(ipAddress);
 
         StatusCodeEnum statusCodeEnum = StatusCodeEnum.REGISTER_SUCCESSFULLY;
@@ -103,7 +103,7 @@ public class AuthController {
     public ResponseEntity<ResponseDto<Void>> verifyActivation(
             @Valid @ParameterObject VerifyOtpRequest request
     ) {
-        userService.activateAccount(request);
+        authService.activateAccount(request);
         StatusCodeEnum statusCodeEnum = StatusCodeEnum.ACTIVE_SUCCESSFULLY;
 
         ResponseDto<Void> responseDto = ResponseBuilder.okResponse(
@@ -125,7 +125,7 @@ public class AuthController {
             throw new TooManyListenersException("10");
         }
 
-        userService.resendEmailActive(email);
+        authService.resendEmailActive(email);
         redisLimitService.increaseRequestAttempts(ipAddress);
         StatusCodeEnum statusCodeEnum = StatusCodeEnum.SEND_OTP_SUCCESSFULLY;
 
@@ -147,7 +147,7 @@ public class AuthController {
         if (redisLimitService.isRequestBlocked(ipAddress)) {
             throw new TooManyListenersException("10");
         }
-        userService.forgotPassword(email);
+        authService.forgotPassword(email);
         redisLimitService.increaseRequestAttempts(ipAddress);
         StatusCodeEnum statusCodeEnum = StatusCodeEnum.SEND_OTP_SUCCESSFULLY;
 
@@ -164,7 +164,7 @@ public class AuthController {
     public ResponseEntity<ResponseDto<String>> verifyOtpForgotPassword(
             @Valid @ParameterObject VerifyOtpRequest request
     ) {
-        String token = userService.verifyOtpForgotPassword(request);
+        String token = authService.verifyOtpForgotPassword(request);
         StatusCodeEnum statusCodeEnum = StatusCodeEnum.OTP_VALID;
 
         ResponseDto<String> responseDto = ResponseBuilder.okResponse(
@@ -181,7 +181,7 @@ public class AuthController {
     public ResponseEntity<ResponseDto<Void>> setPassword(
             @Valid @ParameterObject SetPasswordRequest request
     ) {
-        userService.setPassword(request);
+        authService.setPassword(request);
         StatusCodeEnum statusCodeEnum = StatusCodeEnum.CHANGE_PASSWORD_SUCCESSFULLY;
 
         ResponseDto<Void> responseDto = ResponseBuilder.okResponse(
@@ -197,7 +197,7 @@ public class AuthController {
     public ResponseEntity<ResponseDto<String>> refreshToken(
             @NotBlank @RequestHeader("RefreshToken") String refreshToken
     ) {
-        String accessToken = userService.refreshToken(refreshToken);
+        String accessToken = authService.refreshToken(refreshToken);
         StatusCodeEnum statusCodeEnum = StatusCodeEnum.REQUEST_SUCCESSFULLY;
 
         ResponseDto<String> responseDto = ResponseBuilder.okResponse(
@@ -227,7 +227,7 @@ public class AuthController {
     public ResponseEntity<ResponseDto<Void>> logout(
             @NotBlank @RequestHeader("RefreshToken") String refreshToken
     ) {
-        userService.logout(refreshToken);
+        authService.logout(refreshToken);
         StatusCodeEnum statusCodeEnum = StatusCodeEnum.REQUEST_SUCCESSFULLY;
 
         ResponseDto<Void> responseDto = ResponseBuilder.okResponse(

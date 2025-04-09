@@ -4,7 +4,7 @@ import com.fieldmanagement.commom.model.constant.EmailConstant;
 import com.fieldmanagement.fieldmanagement_be.config.language.LanguageService;
 import com.fieldmanagement.fieldmanagement_be.model.entity.UserModel;
 import com.fieldmanagement.fieldmanagement_be.service.EmailService;
-import com.fieldmanagement.fieldmanagement_be.service.UserService;
+import com.fieldmanagement.fieldmanagement_be.service.AuthService;
 import com.fieldmanagement.fieldmanagement_be.util.SecurityUtils;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AppController {
     private final LanguageService languageService;
-    private final UserService userService;
+    private final AuthService authService;
     private final EmailService emailService;
 
     @GetMapping
@@ -35,8 +35,8 @@ public class AppController {
     @GetMapping("/name")
     public String myName(
     ){
-        UserModel userModel = SecurityUtils.getUserFromSecurity();
-        return languageService.getMessage("user", StringUtils.hasText(userModel.getEmail()) ? userModel.getEmail() : null);
+        String userModel = SecurityUtils.getUserEmailFromSecurity();
+        return languageService.getMessage("user", userModel);
     }
 
     @GetMapping("/send-email")

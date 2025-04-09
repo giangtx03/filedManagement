@@ -14,6 +14,10 @@ import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -29,6 +33,9 @@ public class UserDetailModel extends UserDetailBaseModel {
     UserModel user;
 
     public String getFullName() {
-        return String.format("%s %s", this.getFirstName(), this.getLastName());
+        return Stream.of(getFirstName(), getLastName())
+                .filter(Objects::nonNull)
+                .map(String::trim)
+                .collect(Collectors.joining(" "));
     }
 }

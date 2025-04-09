@@ -7,7 +7,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserDetailDto extends UserDetailModel {
-    public UserDetailDto(UserDetailModel userDetailModel){
+    public UserDetailDto(UserDetailModel userDetailModel) {
+        mapBaseModel(userDetailModel);
+    }
+
+    private void mapBaseModel(UserDetailModel userDetailModel) {
         super.setId(userDetailModel.getId());
         super.setFirstName(userDetailModel.getFirstName());
         super.setLastName(userDetailModel.getLastName());

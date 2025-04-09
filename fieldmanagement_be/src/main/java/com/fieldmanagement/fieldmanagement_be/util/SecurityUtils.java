@@ -9,7 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 @UtilityClass
 public class SecurityUtils {
 
-    public UserModel getUserFromSecurity() {
+    public String getUserEmailFromSecurity() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || !authentication.isAuthenticated()) {
@@ -17,7 +17,7 @@ public class SecurityUtils {
         }
         Object principal = authentication.getPrincipal();
         if (principal instanceof UserDetailsImpl) {
-            return ((UserDetailsImpl) principal).getUser();
+            return ((UserDetailsImpl) principal).getUser().getEmail();
         }
         return null;
     }

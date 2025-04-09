@@ -10,16 +10,15 @@ import com.fieldmanagement.fieldmanagement_be.model.response.UserResponse;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Named;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Mapper(componentModel = "spring", imports = {RoleEnum.class, ProviderEnum.class})
 public interface UserMapper {
 
-    @Mapping(source = "userDetailDto", target = "fullName", qualifiedByName = "toFullName")
+    @Mapping(source = "fullName", target = "fullName")
     UserResponse toResponse(UserDetailDto userDetailDto);
 
-    @Mapping(source = "userDetailModel", target = "fullName", qualifiedByName = "toFullName")
+    @Mapping(source = "fullName", target = "fullName")
     UserResponse toResponse(UserDetailModel userDetailModel);
 
     @Mapping(target = "role", expression = "java(RoleEnum.USER)")
@@ -30,16 +29,4 @@ public interface UserMapper {
                           @Context PasswordEncoder passwordEncoder);
 
     UserDetailModel toUserDetailModel(RegisterRequest registerRequest);
-
-    @Named("toFullName")
-    default String toFullName(UserDetailDto userDetailDto) {
-        if (userDetailDto == null) return null;
-        return userDetailDto.getFirstName() + " " + userDetailDto.getLastName();
-    }
-
-    @Named("toFullName")
-    default String toFullName(UserDetailModel userDetailDto) {
-        if (userDetailDto == null) return null;
-        return userDetailDto.getFirstName() + " " + userDetailDto.getLastName();
-    }
 }
