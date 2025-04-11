@@ -44,6 +44,7 @@ public class ImageFieldAspect {
         if (obj instanceof Collection<?> collection) {
             for (Object item : collection) processImageFields(item);
         } else if (obj.getClass().isArray()) {
+            if (obj.getClass().getComponentType().isPrimitive()) return;
             for (Object item : (Object[]) obj) processImageFields(item);
         } else if (obj instanceof Map<?, ?> map) {
             map.values().forEach(this::processImageFields);

@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
+import java.time.OffsetDateTime;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -46,5 +47,12 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public boolean existsByEmail(String email) {
         return jpaUserRepository.existsByEmail(email);
+    }
+
+    @Override
+    public void softDelete(User user) {
+        user.setDeletedAt(OffsetDateTime.now());
+        UserEntity userEntity = userMapper.toUserEntity(user);
+        jpaUserRepository.save(userEntity);
     }
 }

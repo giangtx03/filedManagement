@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class HibernateFilterListener {
     private final FilterInterceptor filterInterceptor;
 
-    @Before("execution(* com/fieldmanagement/fieldmanagement_be/dao/repository..*(..))")
+    @Before("execution(* com.fieldmanagement..db.impl..*(..))")
     public void applyFilter() {
         filterInterceptor.enableFilter();
     }

@@ -5,6 +5,8 @@ import com.fieldmanagement.fieldmanagement_be.common.base.dto.PageResponseDto;
 import com.fieldmanagement.fieldmanagement_be.common.base.dto.ResponseDto;
 import lombok.experimental.UtilityClass;
 
+import java.time.OffsetDateTime;
+
 @UtilityClass
 public class ResponseBuilder {
     public ResponseDto<Void> okResponse(int code, String message){
@@ -12,6 +14,7 @@ public class ResponseBuilder {
                 .success(true)
                 .message(message)
                 .statusCode(code)
+                .time(OffsetDateTime.now())
                 .build();
     }
 
@@ -21,6 +24,7 @@ public class ResponseBuilder {
                 .message(message)
                 .statusCode(code)
                 .data(data)
+                .time(OffsetDateTime.now())
                 .build();
     }
 
@@ -31,6 +35,7 @@ public class ResponseBuilder {
                 .statusCode(code)
                 .data(data)
                 .metaData(metaData)
+                .time(OffsetDateTime.now())
                 .build();
     }
 
@@ -39,6 +44,7 @@ public class ResponseBuilder {
                 .success(false)
                 .message(message)
                 .statusCode(code)
+                .time(OffsetDateTime.now())
                 .build();
     }
 
@@ -48,6 +54,7 @@ public class ResponseBuilder {
                 .message(message)
                 .statusCode(code)
                 .data(data)
+                .time(OffsetDateTime.now())
                 .build();
     }
 }

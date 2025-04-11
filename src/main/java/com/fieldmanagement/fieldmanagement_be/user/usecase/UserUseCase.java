@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 
@@ -29,11 +30,11 @@ public class UserUseCase {
 
         User user = userRepo.findByEmail(email)
                 .orElseThrow(() ->
-                        new UsernameNotFoundException("Không tìm thấy email trong security")
-                );
+                        new UsernameNotFoundException("Không tìm thấy email trong security"));
         return userMapper.toResponse(user);
     }
 
+    @Transactional
     public UserResponse updateProfile(UpdateProfileRequest profileRequest) throws IOException {
         User user = userRepo.findById(profileRequest.getId())
                 .orElseThrow(() ->
@@ -50,5 +51,15 @@ public class UserUseCase {
         user.setUserDetail(userDetail);
         User saved = userRepo.save(user);
         return userMapper.toResponse(saved);
+    }
+
+    @Transactional
+    public void deleteProfile() {
+        String email = SecurityUtils.getUserEmailFromSecurity();
+
+        User user = userRepo.findByEmail(email)
+                .orElseThrow(() ->
+                        new UsernameNotFoundException("Không tìm thấy email trong security"));
+        userRepo.softDelete(user);
     }
 }
