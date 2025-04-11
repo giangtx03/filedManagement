@@ -62,4 +62,11 @@ public class UserUseCase {
                         new UsernameNotFoundException("Không tìm thấy email trong security"));
         userRepo.softDelete(user);
     }
+
+    public UserResponse getOtherProfile(String id) {
+        User user = userRepo.findById(id)
+                .orElseThrow(() ->
+                        new UsernameNotFoundException("Không tìm người dùng"));
+        return userMapper.toResponse(user);
+    }
 }

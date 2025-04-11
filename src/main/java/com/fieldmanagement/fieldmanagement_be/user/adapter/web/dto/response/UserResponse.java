@@ -1,5 +1,6 @@
 package com.fieldmanagement.fieldmanagement_be.user.adapter.web.dto.response;
 
+import com.fieldmanagement.fieldmanagement_be.common.base.enums.RoleEnum;
 import com.fieldmanagement.fieldmanagement_be.config.file.ImageField;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,6 +25,7 @@ public class UserResponse {
     private String address;
     private LocalDate dob;
     private String phoneNumber;
+    private RoleEnum role;
     private OffsetDateTime createdAt;
     private OffsetDateTime updatedAt;
     private OffsetDateTime deletedAt;

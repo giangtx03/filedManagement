@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public interface UserMapper {
     @Mapping(source = "id", target = "id")
     @Mapping(source = "email", target = "email")
+    @Mapping(source = "role", target = "role")
     @Mapping(source = "userDetail.phoneNumber", target = "phoneNumber")
     @Mapping(source = "userDetail.fullName", target = "fullName")
     @Mapping(source = "userDetail.avatar", target = "avatar")
