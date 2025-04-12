@@ -48,21 +48,24 @@ public class FieldEntity extends BaseEntity {
     @Column(name = "location", nullable = false)
     String location;
 
+    @Column(name = "description", nullable = false)
+    String description;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", nullable = false, updatable = false)
     UserEntity owner;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "favorites",
-            joinColumns = @JoinColumn(name = "large_field_id"),
+            joinColumns = @JoinColumn(name = "field_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"),
-            uniqueConstraints = @UniqueConstraint(columnNames = {"large_field_id", "user_id"})
+            uniqueConstraints = @UniqueConstraint(columnNames = {"field_id", "user_id"})
     )
     List<UserEntity> users;
 
-    @OneToMany(mappedBy = "largeField")
+    @OneToMany(mappedBy = "field")
     List<ReviewEntity> reviews;
 
-    @OneToMany(mappedBy = "largeField")
-    List<SubFieldEntity> smallFields;
+    @OneToMany(mappedBy = "field")
+    List<SubFieldEntity> subFields;
 }

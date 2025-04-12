@@ -44,6 +44,6 @@ public class ReviewEntity extends BaseEntity {
     UserEntity user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "large_field_id", nullable = false, updatable = false)
-    FieldEntity largeField;
+    @JoinColumn(name = "field_id", nullable = false, updatable = false)
+    FieldEntity field;
 }
