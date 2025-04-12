@@ -15,12 +15,12 @@ import com.fieldmanagement.fieldmanagement_be.common.util.OtpGenerator;
 import com.fieldmanagement.fieldmanagement_be.common.util.RedisUtils;
 import com.fieldmanagement.fieldmanagement_be.config.security.UserDetailsImpl;
 import com.fieldmanagement.fieldmanagement_be.infra.jwt.JwtProvider;
-import com.fieldmanagement.fieldmanagement_be.user.adapter.web.dto.TokenDto;
+import com.fieldmanagement.fieldmanagement_be.user.domain.dto.TokenDTO;
 import com.fieldmanagement.fieldmanagement_be.user.adapter.mapper.UserMapper;
-import com.fieldmanagement.fieldmanagement_be.user.adapter.web.dto.request.auth.LoginRequest;
-import com.fieldmanagement.fieldmanagement_be.user.adapter.web.dto.request.auth.RegisterRequest;
-import com.fieldmanagement.fieldmanagement_be.user.adapter.web.dto.request.auth.SetPasswordRequest;
-import com.fieldmanagement.fieldmanagement_be.user.adapter.web.dto.request.auth.VerifyOtpRequest;
+import com.fieldmanagement.fieldmanagement_be.user.adapter.web.dto.request.LoginRequest;
+import com.fieldmanagement.fieldmanagement_be.user.adapter.web.dto.request.RegisterRequest;
+import com.fieldmanagement.fieldmanagement_be.user.adapter.web.dto.request.SetPasswordRequest;
+import com.fieldmanagement.fieldmanagement_be.user.adapter.web.dto.request.VerifyOtpRequest;
 import com.fieldmanagement.fieldmanagement_be.user.adapter.web.dto.response.LoginResponse;
 import com.fieldmanagement.fieldmanagement_be.user.adapter.web.dto.response.UserResponse;
 import com.fieldmanagement.fieldmanagement_be.user.domain.port.UserRepository;
@@ -75,7 +75,7 @@ public class AuthUseCase {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         User userModel = userDetails.getUser();
 
-        TokenDto tokenDto = jwtProvider.generateToken(userModel);
+        TokenDTO tokenDto = jwtProvider.generateToken(userModel);
 
         UserResponse userResponse = userMapper.toResponse(userModel);
         return LoginResponse.builder()

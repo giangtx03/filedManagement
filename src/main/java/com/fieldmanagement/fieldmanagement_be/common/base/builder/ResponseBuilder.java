@@ -2,6 +2,7 @@ package com.fieldmanagement.fieldmanagement_be.common.base.builder;
 
 import com.fieldmanagement.fieldmanagement_be.common.base.dto.MetaData;
 import com.fieldmanagement.fieldmanagement_be.common.base.dto.PageResponseDto;
+import com.fieldmanagement.fieldmanagement_be.common.base.dto.PageResult;
 import com.fieldmanagement.fieldmanagement_be.common.base.dto.ResponseDto;
 import lombok.experimental.UtilityClass;
 
@@ -28,13 +29,13 @@ public class ResponseBuilder {
                 .build();
     }
 
-    public <T> PageResponseDto<T> okResponse(int code, String message, T data, MetaData metaData) {
+    public <T> PageResponseDto<T> okResponse(int code, String message, PageResult<T> result) {
         return PageResponseDto.<T>builder()
                 .success(true)
                 .message(message)
                 .statusCode(code)
-                .data(data)
-                .metaData(metaData)
+                .data(result.getData())
+                .metaData(result.getMetaData())
                 .time(OffsetDateTime.now())
                 .build();
     }

@@ -1,4 +1,4 @@
-package com.fieldmanagement.fieldmanagement_be.user.adapter.web.dto;
+package com.fieldmanagement.fieldmanagement_be.common.base.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,10 +8,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class TokenDto {
-    private String accessToken;
-    private String refreshToken;
+public class PageResult <T> {
+    private T data;
+    private MetaData metaData;
 }

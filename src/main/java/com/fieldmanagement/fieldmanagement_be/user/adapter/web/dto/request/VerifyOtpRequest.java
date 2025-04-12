@@ -1,4 +1,4 @@
-package com.fieldmanagement.fieldmanagement_be.user.adapter.web.dto.request.auth;
+package com.fieldmanagement.fieldmanagement_be.user.adapter.web.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

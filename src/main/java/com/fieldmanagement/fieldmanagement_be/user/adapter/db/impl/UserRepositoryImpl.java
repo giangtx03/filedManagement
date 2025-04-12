@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Primary
-@Repository("jpa")
+@Repository("jpaUserImpl")
 public class UserRepositoryImpl implements UserRepository {
     private final JpaUserRepository jpaUserRepository;
     private final UserMapper userMapper;

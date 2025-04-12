@@ -4,9 +4,9 @@ import com.fieldmanagement.fieldmanagement_be.common.base.builder.ResponseBuilde
 import com.fieldmanagement.fieldmanagement_be.common.base.dto.ResponseDto;
 import com.fieldmanagement.fieldmanagement_be.common.base.enums.StatusCodeEnum;
 import com.fieldmanagement.fieldmanagement_be.infra.language.LanguageService;
-import com.fieldmanagement.fieldmanagement_be.user.adapter.web.dto.request.user.UpdateProfileRequest;
+import com.fieldmanagement.fieldmanagement_be.user.adapter.web.dto.request.UpdateProfileRequest;
 import com.fieldmanagement.fieldmanagement_be.user.adapter.web.dto.response.UserResponse;
-import com.fieldmanagement.fieldmanagement_be.user.usecase.UserUseCase;
+import com.fieldmanagement.fieldmanagement_be.user.usecase.ProfileUseCase;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -24,15 +24,15 @@ import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("${api.prefix}/users")
-public class UserController {
-    private final UserUseCase userUseCase;
+@RequestMapping("${api.prefix}/users/profile")
+public class ProfileController {
+    private final ProfileUseCase profileUseCase;
     private final LanguageService languageService;
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/profile/me")
+    @GetMapping("/me")
     public ResponseEntity<ResponseDto<UserResponse>> getMe() {
-        UserResponse userResponse = userUseCase.getMe();
+        UserResponse userResponse = profileUseCase.getMe();
 
         StatusCodeEnum statusCodeEnum = StatusCodeEnum.REQUEST_SUCCESSFULLY;
 
@@ -47,11 +47,11 @@ public class UserController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PutMapping(value = "/profile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ResponseDto<UserResponse>> updateProfile(
             @Valid @ModelAttribute UpdateProfileRequest profileRequest
     ) throws IOException {
-        UserResponse userResponse = userUseCase.updateProfile(profileRequest);
+        UserResponse userResponse = profileUseCase.updateProfile(profileRequest);
 
         StatusCodeEnum statusCodeEnum = StatusCodeEnum.REQUEST_SUCCESSFULLY;
 
@@ -68,7 +68,7 @@ public class UserController {
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping
     public ResponseEntity<ResponseDto<Void>> delete() {
-        userUseCase.deleteProfile();
+        profileUseCase.deleteProfile();
 
         StatusCodeEnum statusCodeEnum = StatusCodeEnum.REQUEST_SUCCESSFULLY;
 
@@ -81,11 +81,11 @@ public class UserController {
                 .body(responseDto);
     }
 
-    @GetMapping("/profile/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ResponseDto<UserResponse>> getOtherProfile(
             @PathVariable String id
     ) {
-        UserResponse userResponse = userUseCase.getOtherProfile(id);
+        UserResponse userResponse = profileUseCase.getOtherProfile(id);
 
         StatusCodeEnum statusCodeEnum = StatusCodeEnum.REQUEST_SUCCESSFULLY;
 

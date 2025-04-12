@@ -70,7 +70,7 @@ public class UserEntity extends BaseEntity {
     UserDetailEntity userDetail;
 
     @OneToMany(mappedBy = "owner")
-    List<FieldEntity> largeField;
+    List<FieldEntity> field;
 
     @OneToMany(mappedBy = "user")
     List<BookingEntity> bookings;

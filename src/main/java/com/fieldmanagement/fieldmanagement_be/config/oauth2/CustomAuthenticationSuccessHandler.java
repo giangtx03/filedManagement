@@ -2,7 +2,7 @@ package com.fieldmanagement.fieldmanagement_be.config.oauth2;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fieldmanagement.fieldmanagement_be.infra.jwt.JwtProvider;
-import com.fieldmanagement.fieldmanagement_be.user.adapter.web.dto.TokenDto;
+import com.fieldmanagement.fieldmanagement_be.user.domain.dto.TokenDTO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,7 +25,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     ) throws IOException, ServletException {
         CustomOAuth2User oauthUser = (CustomOAuth2User) authentication.getPrincipal();
 
-        TokenDto tokenDto = jwtProvider.generateToken(oauthUser.getUser());
+        TokenDTO tokenDto = jwtProvider.generateToken(oauthUser.getUser());
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");

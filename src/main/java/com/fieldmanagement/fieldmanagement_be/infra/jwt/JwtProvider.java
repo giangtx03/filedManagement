@@ -4,9 +4,9 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.fieldmanagement.fieldmanagement_be.FieldmanagementBeApplication;
+import com.fieldmanagement.fieldmanagement_be.FieldManagementApplication;
 import com.fieldmanagement.fieldmanagement_be.infra.language.LanguageService;
-import com.fieldmanagement.fieldmanagement_be.user.adapter.web.dto.TokenDto;
+import com.fieldmanagement.fieldmanagement_be.user.domain.dto.TokenDTO;
 import com.fieldmanagement.fieldmanagement_be.user.domain.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,11 +33,11 @@ public class JwtProvider {
     @Value("${jwt.expiration.time.refresh}")
     private long timeRefresh;
 
-    public TokenDto generateToken(User userModel) {
+    public TokenDTO generateToken(User userModel) {
         String accessToken = generateToken(userModel, accessKey, timeAccess);
         String refreshToken = generateToken(userModel, refreshKey, timeRefresh);
 
-        return TokenDto.builder()
+        return TokenDTO.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
@@ -48,7 +48,7 @@ public class JwtProvider {
         Instant now = Instant.now();
         return JWT.create()
                 .withSubject(userModel.getEmail())
-                .withIssuer(FieldmanagementBeApplication.class.getPackageName())
+                .withIssuer(FieldManagementApplication.class.getPackageName())
                 .withIssuedAt(now)
                 .withExpiresAt(now.plus(Duration.ofMillis(time)))
                 .sign(algorithmRefresh);
@@ -58,7 +58,7 @@ public class JwtProvider {
         Algorithm algorithm = Algorithm.HMAC256(key);
 
         JWTVerifier verifier = JWT.require(algorithm)
-                .withIssuer(FieldmanagementBeApplication.class.getPackageName())
+                .withIssuer(FieldManagementApplication.class.getPackageName())
                 .build();
 
         return verifier.verify(token);

@@ -1,4 +1,4 @@
-package com.fieldmanagement.fieldmanagement_be.user.adapter.web.dto.request.auth;
+package com.fieldmanagement.fieldmanagement_be.user.adapter.web.dto.request;
 
 import com.fieldmanagement.fieldmanagement_be.common.base.annotation.ValidPassword;
 import jakarta.validation.constraints.NotBlank;

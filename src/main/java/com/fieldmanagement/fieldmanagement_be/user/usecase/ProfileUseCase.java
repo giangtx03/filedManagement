@@ -6,7 +6,7 @@ import com.fieldmanagement.fieldmanagement_be.user.exception.UserNotFoundExcepti
 import com.fieldmanagement.fieldmanagement_be.common.port.FileService;
 import com.fieldmanagement.fieldmanagement_be.common.util.SecurityUtils;
 import com.fieldmanagement.fieldmanagement_be.user.adapter.mapper.UserMapper;
-import com.fieldmanagement.fieldmanagement_be.user.adapter.web.dto.request.user.UpdateProfileRequest;
+import com.fieldmanagement.fieldmanagement_be.user.adapter.web.dto.request.UpdateProfileRequest;
 import com.fieldmanagement.fieldmanagement_be.user.adapter.web.dto.response.UserResponse;
 import com.fieldmanagement.fieldmanagement_be.user.domain.port.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
-public class UserUseCase {
+public class ProfileUseCase {
     private final UserRepository userRepo;
     private final UserMapper userMapper;
     @Qualifier("image-local")

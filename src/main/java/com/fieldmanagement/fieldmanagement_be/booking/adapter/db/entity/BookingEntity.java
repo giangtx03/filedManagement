@@ -61,8 +61,8 @@ public class BookingEntity extends BaseEntity {
     HourlyRateEntity hourlyRate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "small_field_id", nullable = false, updatable = false)
-    SubFieldEntity smallField;
+    @JoinColumn(name = "sub_field_id", nullable = false, updatable = false)
+    SubFieldEntity subField;
 
     @OneToMany(mappedBy = "booking")
     List<PaymentEntity> payments;

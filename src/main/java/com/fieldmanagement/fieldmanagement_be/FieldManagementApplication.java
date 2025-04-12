@@ -6,10 +6,10 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @SpringBootApplication
 @EnableAspectJAutoProxy
-public class FieldmanagementBeApplication {
+public class FieldManagementApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(FieldmanagementBeApplication.class, args);
+        SpringApplication.run(FieldManagementApplication.class, args);
     }
 
 }

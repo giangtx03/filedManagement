@@ -1,4 +1,4 @@
-package com.fieldmanagement.fieldmanagement_be.user.adapter.web.dto.request.user;
+package com.fieldmanagement.fieldmanagement_be.user.adapter.web.dto.request;
 
 import com.fieldmanagement.fieldmanagement_be.common.base.annotation.ValidBirthDate;
 import com.fieldmanagement.fieldmanagement_be.common.base.annotation.ValidPhoneNumber;

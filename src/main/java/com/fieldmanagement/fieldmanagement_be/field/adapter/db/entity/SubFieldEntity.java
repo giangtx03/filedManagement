@@ -10,6 +10,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -45,10 +46,13 @@ public class SubFieldEntity extends BaseEntity {
     @Column(name = "type", nullable = false)
     FieldTypeEnum type;
 
-    @OneToMany(mappedBy = "smallField")
+    @OneToMany(mappedBy = "subField")
     List<BookingEntity> bookings;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "large_field_id", nullable = false, updatable = false)
-    FieldEntity largeField;
+    @JoinColumn(name = "field_id", nullable = false, updatable = false)
+    FieldEntity field;
+
+    @ManyToMany(mappedBy = "subFields")
+    List<HourlyRateEntity> hourlyRates;
 }

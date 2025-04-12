@@ -53,8 +53,8 @@ public class HourlyRateEntity extends BaseEntity {
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "hourly_fields",
             joinColumns = @JoinColumn(name = "hourly_rate_id"),
-            inverseJoinColumns = @JoinColumn(name = "small_field_id"),
-            uniqueConstraints = @UniqueConstraint(columnNames = {"hourly_rate_id", "small_field_id"})
+            inverseJoinColumns = @JoinColumn(name = "sub_field_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"hourly_rate_id", "sub_field_id"})
     )
-    List<SubFieldEntity> smallFields;
+    List<SubFieldEntity> subFields;
 }

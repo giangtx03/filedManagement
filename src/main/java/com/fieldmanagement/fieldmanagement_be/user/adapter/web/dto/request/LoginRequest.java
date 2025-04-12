@@ -1,4 +1,4 @@
-package com.fieldmanagement.fieldmanagement_be.user.adapter.web.dto.request.auth;
+package com.fieldmanagement.fieldmanagement_be.user.adapter.web.dto.request;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.constraints.NotBlank;
