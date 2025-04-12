@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Field;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 @Aspect
@@ -63,6 +64,15 @@ public class ImageFieldAspect {
                     if (value instanceof String path && !path.startsWith("http")) {
                         String fixedPath = path.replace("\\", "/");
                         field.set(obj, imageBaseUrl + fixedPath);
+                    }
+                    else if (value instanceof List<?> list) {
+                        List<?> newList = list.stream().map(item -> {
+                            if (item instanceof String str && !str.startsWith("http")) {
+                                return imageBaseUrl + str.replace("\\", "/");
+                            }
+                            return item;
+                        }).toList();
+                        field.set(obj, newList);
                     }
                 } catch (IllegalAccessException ignored) {
                 }
