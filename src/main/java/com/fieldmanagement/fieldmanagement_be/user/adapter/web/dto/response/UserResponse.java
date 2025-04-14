@@ -1,7 +1,7 @@
 package com.fieldmanagement.fieldmanagement_be.user.adapter.web.dto.response;
 
 import com.fieldmanagement.fieldmanagement_be.common.base.enums.RoleEnum;
-import com.fieldmanagement.fieldmanagement_be.config.file.ImageField;
+import com.fieldmanagement.fieldmanagement_be.config.aop.ImageField;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

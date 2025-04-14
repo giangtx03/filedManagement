@@ -2,7 +2,6 @@ package com.fieldmanagement.fieldmanagement_be.field.domain.dto;
 
 import com.fieldmanagement.fieldmanagement_be.field.domain.model.Field;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;

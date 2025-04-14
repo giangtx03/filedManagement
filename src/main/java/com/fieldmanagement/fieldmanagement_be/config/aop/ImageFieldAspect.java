@@ -1,4 +1,4 @@
-package com.fieldmanagement.fieldmanagement_be.config.file;
+package com.fieldmanagement.fieldmanagement_be.config.aop;
 
 import com.fieldmanagement.fieldmanagement_be.common.base.dto.ResponseDto;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -56,27 +56,35 @@ public class ImageFieldAspect {
 
     private void updateImageFields(Object obj) {
         Class<?> clazz = obj.getClass();
-        for (Field field : clazz.getDeclaredFields()) {
-            if (field.isAnnotationPresent(ImageField.class)) {
-                field.setAccessible(true);
-                try {
-                    Object value = field.get(obj);
-                    if (value instanceof String path && !path.startsWith("http")) {
-                        String fixedPath = path.replace("\\", "/");
-                        field.set(obj, imageBaseUrl + fixedPath);
-                    }
-                    else if (value instanceof List<?> list) {
-                        List<?> newList = list.stream().map(item -> {
-                            if (item instanceof String str && !str.startsWith("http")) {
-                                return imageBaseUrl + str.replace("\\", "/");
+        while (clazz != null && clazz != Object.class) {
+            for (Field field : clazz.getDeclaredFields()) {
+                if (field.isAnnotationPresent(ImageField.class)) {
+                    field.setAccessible(true);
+                    try {
+                        Object value = field.get(obj);
+                        if (value instanceof String path) {
+                            if (!path.startsWith("http")) {
+                                String fixedPath = imageBaseUrl + path.replace("\\", "/");
+                                field.set(obj, fixedPath);
                             }
-                            return item;
-                        }).toList();
-                        field.set(obj, newList);
+                        } else if (value instanceof List<?> list) {
+                            if (!list.isEmpty() && list.get(0) instanceof String) {
+                                List<String> updatedList = list.stream()
+                                        .map(item -> {
+                                            String str = (String) item;
+                                            return str.startsWith("http") ? str : imageBaseUrl + str.replace("\\", "/");
+                                        })
+                                        .toList();
+
+                                field.set(obj, updatedList);
+                            }
+                        }
+                    } catch (IllegalAccessException ignored) {
                     }
-                } catch (IllegalAccessException ignored) {
                 }
             }
+            clazz = clazz.getSuperclass(); // Lên class cha
         }
     }
+
 }
