@@ -9,11 +9,9 @@ import com.fieldmanagement.fieldmanagement_be.field.adapter.web.dto.request.Fiel
 import com.fieldmanagement.fieldmanagement_be.field.adapter.web.dto.response.FieldDetailResponse;
 import com.fieldmanagement.fieldmanagement_be.field.adapter.web.dto.response.FieldResponse;
 import com.fieldmanagement.fieldmanagement_be.field.domain.dto.FieldDTO;
-import com.fieldmanagement.fieldmanagement_be.field.domain.model.Field;
 import com.fieldmanagement.fieldmanagement_be.field.domain.port.FieldRepository;
 import com.fieldmanagement.fieldmanagement_be.field.exception.FieldNotFoundException;
-import com.fieldmanagement.fieldmanagement_be.image.domain.model.Image;
-import com.fieldmanagement.fieldmanagement_be.image.domain.port.ImageRepository;
+import com.fieldmanagement.fieldmanagement_be.image.domain.port.ImageQueryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,7 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FieldUseCase {
     private final FieldRepository fieldRepository;
-    private final ImageRepository imageRepository;
+    private final ImageQueryPort imageQueryPort;
     private final FieldMapper fieldMapper;
 
     public PageResult<List<FieldResponse>> getAllFields(FieldFilterRequest filterRequest) {
@@ -60,9 +58,7 @@ public class FieldUseCase {
     }
 
     private FieldDTO getAllImages(FieldDTO fieldDTO) {
-        List<String> images = imageRepository.findAllByTargetIdAndTargetType(
-                fieldDTO.getId(), ImageTargetTypeEnum.FIELD
-        ).stream().map(Image::getPath).toList();
+        List<String> images = imageQueryPort.getImagePathsByTarget(fieldDTO.getId(), ImageTargetTypeEnum.FIELD);
         fieldDTO.setImages(images);
         return fieldDTO;
     }

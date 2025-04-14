@@ -1,20 +1,17 @@
 package com.fieldmanagement.fieldmanagement_be.field.domain.dto;
 
-import com.fieldmanagement.fieldmanagement_be.field.domain.model.Field;
+import com.fieldmanagement.fieldmanagement_be.field.domain.model.HourlyRate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import java.util.List;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-public class FieldDTO extends Field {
-    private Double avgStar;
-    private List<String> images;
+public class TimeSlotDTO extends HourlyRate {
+    private Boolean booked;
 }
