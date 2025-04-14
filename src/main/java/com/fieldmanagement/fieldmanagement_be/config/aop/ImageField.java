@@ -1,4 +1,4 @@
-package com.fieldmanagement.fieldmanagement_be.config.file;
+package com.fieldmanagement.fieldmanagement_be.config.aop;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -33,7 +33,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-@Entity(name = "BookingModel")
+@Entity(name = "Booking")
 @Table(name = "bookings")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class BookingEntity extends BaseEntity {

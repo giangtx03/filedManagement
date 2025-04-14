@@ -1,7 +1,5 @@
 package com.fieldmanagement.fieldmanagement_be.field.adapter.web.dto.response;
 
-import com.fieldmanagement.fieldmanagement_be.config.aop.ImageField;
-import com.fieldmanagement.fieldmanagement_be.user.adapter.web.dto.response.UserResponse;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,11 +16,6 @@ import java.util.List;
 @NoArgsConstructor
 @SuperBuilder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class FieldResponse extends FieldSimpleResponse {
-    String location;
-    String description;
-    UserResponse owner;
-    @ImageField
-    List<String> images;
-    Float avgStar;
+public class FieldDetailResponse extends FieldResponse {
+    List<SubFieldResponse> subFields;
 }

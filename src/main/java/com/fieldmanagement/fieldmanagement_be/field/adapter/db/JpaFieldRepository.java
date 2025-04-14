@@ -11,7 +11,17 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 public interface JpaFieldRepository extends JpaRepository<FieldEntity, String> {
-    Optional<FieldEntity> findByUrlSlug(String urlSlug);
+    @Query("""
+            SELECT new com.fieldmanagement.fieldmanagement_be.field.adapter.db.dto.FieldEntityDTO(
+                f,
+                avg(coalesce(r.rating, 0))
+            )
+            FROM Field f
+            LEFT JOIN Review r ON r.field.id = f.id
+            WHERE f.urlSlug = :urlSlug
+            GROUP BY f
+            """)
+    Optional<FieldEntityDTO> findByUrlSlug(@Param("urlSlug") String urlSlug);
 
     @Query("""
             SELECT new com.fieldmanagement.fieldmanagement_be.field.adapter.db.dto.FieldEntityDTO(

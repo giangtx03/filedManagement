@@ -2,7 +2,7 @@ package com.fieldmanagement.fieldmanagement_be.field.domain.model;
 
 import com.fieldmanagement.fieldmanagement_be.common.base.model.BaseModel;
 import com.fieldmanagement.fieldmanagement_be.review.domain.model.Review;
-import com.fieldmanagement.fieldmanagement_be.user.adapter.db.entity.UserEntity;
+import com.fieldmanagement.fieldmanagement_be.user.domain.model.User;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,7 +25,7 @@ public class Field extends BaseModel {
     String urlSlug;
     String location;
     String description;
-    UserEntity owner;
+    User owner;
     List<SubField> subFields;
     List<Review> reviews;
 }

@@ -3,7 +3,6 @@ package com.fieldmanagement.fieldmanagement_be.field.adapter.db.impl;
 import com.fieldmanagement.fieldmanagement_be.field.adapter.db.JpaFieldRepository;
 import com.fieldmanagement.fieldmanagement_be.field.adapter.db.entity.FieldEntity;
 import com.fieldmanagement.fieldmanagement_be.field.adapter.mapper.FieldMapper;
-import com.fieldmanagement.fieldmanagement_be.field.adapter.db.dto.FieldEntityDTO;
 import com.fieldmanagement.fieldmanagement_be.field.domain.dto.FieldDTO;
 import com.fieldmanagement.fieldmanagement_be.field.domain.model.Field;
 import com.fieldmanagement.fieldmanagement_be.field.domain.port.FieldRepository;
@@ -37,9 +36,9 @@ public class FieldRepositoryImpl implements FieldRepository {
     }
 
     @Override
-    public Optional<Field> findByUrlSlug(String urlSlug) {
+    public Optional<FieldDTO> findByUrlSlug(String urlSlug) {
         return jpaFieldRepository.findByUrlSlug(urlSlug)
-                .map(fieldMapper::toField);
+                .map(fieldMapper::toFieldDTO);
     }
 
     @Override
@@ -51,7 +50,7 @@ public class FieldRepositoryImpl implements FieldRepository {
                 keyword, location,
                 startPrice, endPrice,
                 startTime, endTime, pageable)
-                .map(fieldMapper::toFieldEntityDTO);
+                .map(fieldMapper::toFieldDTO);
     }
 
     @Override
