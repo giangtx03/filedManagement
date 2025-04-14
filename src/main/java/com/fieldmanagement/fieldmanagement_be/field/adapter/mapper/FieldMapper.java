@@ -14,11 +14,8 @@ public interface FieldMapper {
 
     FieldEntity toFieldEntity(Field field);
 
-    @Mapping(target = "reviews", ignore = true)
-    @Mapping(target = "subFields", ignore = true)
     Field toField(FieldEntity saved);
 
-    @Mapping(target = "reviews", ignore = true)
     FieldDTO toFieldDTO(FieldEntityDTO fieldEntityDTO);
 
     FieldResponse toFieldResponse(FieldDTO fieldDTO);
