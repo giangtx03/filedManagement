@@ -9,6 +9,8 @@ import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -19,4 +21,6 @@ public class SubField {
     String id;
     String name;
     FieldTypeEnum type;
+
+    List<HourlyRate> hourlyRates;
 }

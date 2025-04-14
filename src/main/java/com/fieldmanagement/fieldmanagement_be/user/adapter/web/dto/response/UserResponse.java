@@ -1,5 +1,6 @@
 package com.fieldmanagement.fieldmanagement_be.user.adapter.web.dto.response;
 
+import com.fieldmanagement.fieldmanagement_be.common.base.dto.BaseResponse;
 import com.fieldmanagement.fieldmanagement_be.common.base.enums.RoleEnum;
 import com.fieldmanagement.fieldmanagement_be.config.aop.ImageField;
 import lombok.AllArgsConstructor;
@@ -7,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -15,8 +17,8 @@ import java.time.OffsetDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class UserResponse {
+@SuperBuilder
+public class UserResponse extends BaseResponse {
     private String id;
     private String fullName;
     private String email;
@@ -26,7 +28,4 @@ public class UserResponse {
     private LocalDate dob;
     private String phoneNumber;
     private RoleEnum role;
-    private OffsetDateTime createdAt;
-    private OffsetDateTime updatedAt;
-    private OffsetDateTime deletedAt;
 }
