@@ -5,6 +5,7 @@ import com.fieldmanagement.fieldmanagement_be.field.domain.model.Field;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalTime;
 import java.util.Optional;
 
 public interface FieldRepository {
@@ -14,6 +15,6 @@ public interface FieldRepository {
     Page<FieldDTO> getAllFields(
             String keyword, String location,
             Float startPrice, Float endPrice,
-            Float startTime, Float endTime, Pageable pageable);
+            LocalTime fromTime, LocalTime toTime, Pageable pageable);
     void softDelete(Field field);
 }

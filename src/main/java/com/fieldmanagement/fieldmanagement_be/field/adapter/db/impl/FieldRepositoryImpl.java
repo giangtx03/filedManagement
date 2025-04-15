@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.util.Optional;
 
@@ -45,11 +46,11 @@ public class FieldRepositoryImpl implements FieldRepository {
     public Page<FieldDTO> getAllFields(
             String keyword, String location,
             Float startPrice, Float endPrice,
-            Float startTime, Float endTime, Pageable pageable) {
+            LocalTime fromTime, LocalTime toTime, Pageable pageable) {
         return jpaFieldRepository.findAllField(
                 keyword, location,
                 startPrice, endPrice,
-                startTime, endTime, pageable)
+                fromTime, toTime, pageable)
                 .map(fieldMapper::toFieldDTO);
     }
 

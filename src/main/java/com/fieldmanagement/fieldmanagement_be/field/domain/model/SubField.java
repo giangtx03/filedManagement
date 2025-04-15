@@ -1,6 +1,7 @@
 package com.fieldmanagement.fieldmanagement_be.field.domain.model;
 
 import com.fieldmanagement.fieldmanagement_be.common.base.enums.FieldTypeEnum;
+import com.fieldmanagement.fieldmanagement_be.common.base.model.BaseModel;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @SuperBuilder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class SubField {
+public class SubField extends BaseModel {
     String id;
     String name;
     FieldTypeEnum type;

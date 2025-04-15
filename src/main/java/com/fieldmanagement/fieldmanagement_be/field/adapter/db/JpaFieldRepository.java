@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalTime;
 import java.util.Optional;
 
 public interface JpaFieldRepository extends JpaRepository<FieldEntity, String> {
@@ -43,5 +44,5 @@ public interface JpaFieldRepository extends JpaRepository<FieldEntity, String> {
     Page<FieldEntityDTO> findAllField(
             @Param("keyword") String keyword, @Param("location") String location,
             @Param("startPrice") Float startPrice, @Param("endPrice") Float endPrice,
-            @Param("startTime") Float startTime, @Param("endTime") Float endTime, Pageable pageable);
+            @Param("startTime") LocalTime fromTime, @Param("endTime") LocalTime toTime, Pageable pageable);
 }

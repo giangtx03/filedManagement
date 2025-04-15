@@ -2,6 +2,9 @@ package com.fieldmanagement.fieldmanagement_be.booking.adapter.db;
 
 import com.fieldmanagement.fieldmanagement_be.booking.adapter.db.dto.BookingEntityDTO;
 import com.fieldmanagement.fieldmanagement_be.booking.adapter.db.entity.BookingEntity;
+import com.fieldmanagement.fieldmanagement_be.common.base.enums.BookingStatusEnum;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -34,4 +37,24 @@ public interface JpaBookingRepository extends JpaRepository<BookingEntity, Strin
             @Param("subFieldId") String subFieldId,
             @Param("hourlyRateId") String hourlyRateId,
             @Param("date") LocalDate date);
+
+    @Query("""
+            SELECT new com.fieldmanagement.fieldmanagement_be.booking.adapter.db.dto.BookingEntityDTO(
+                b,
+                f
+            )
+            FROM Booking b
+            LEFT JOIN Field f ON b.subField.field.id = f.id
+            WHERE b.user.id = :id
+                AND (:keyword IS NULL OR :keyword = "" OR :keyword LIKE CONCAT('%', f.name,'%'))
+                AND (:status IS NULL OR b.status = :status)
+                AND (:fromDate IS NULL OR b.bookingDate >= :fromDate)
+                AND (:toDate IS NULL OR b.bookingDate <= :toDate)
+            """)
+    Page<BookingEntityDTO> findAllByUserWithFilter(
+            @Param("keyword") String keyword,
+            @Param("id") String id,
+            @Param("status") BookingStatusEnum status,
+            @Param("fromDate") LocalDate fromDate,
+            @Param("toDate") LocalDate toDate, Pageable pageable);
 }

@@ -6,8 +6,11 @@ import com.fieldmanagement.fieldmanagement_be.booking.adapter.mapper.BookingMapp
 import com.fieldmanagement.fieldmanagement_be.booking.domain.dto.BookingDTO;
 import com.fieldmanagement.fieldmanagement_be.booking.domain.model.Booking;
 import com.fieldmanagement.fieldmanagement_be.booking.domain.port.BookingRepository;
+import com.fieldmanagement.fieldmanagement_be.common.base.enums.BookingStatusEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -39,5 +42,15 @@ public class BookingRepositoryImpl implements BookingRepository {
         return jpaBookingRepository.isBookedBySubFieldAndHourlyRateAndDate(
                 subFiledId, hourlyRateId, date
         );
+    }
+
+    @Override
+    public Page<BookingDTO> getAllBookingOfUser(
+            String keyword, String id, BookingStatusEnum status,
+            LocalDate fromDate, LocalDate toDate, Pageable pageable
+    ) {
+        return jpaBookingRepository.findAllByUserWithFilter(keyword, id, status,
+                fromDate, toDate, pageable)
+                .map(bookingMapper::toBookingDTO);
     }
 }

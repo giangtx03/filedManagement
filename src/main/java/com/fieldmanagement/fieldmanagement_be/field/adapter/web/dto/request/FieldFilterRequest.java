@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -15,7 +16,7 @@ public class FieldFilterRequest extends SearchRequest {
     private String location;
     private Float startPrice;
     private Float endPrice;
-    private Float startTime;
-    private Float endTime;
+    private LocalTime fromTime;
+    private LocalTime toTime;
     private List<FieldTypeEnum> types;
 }

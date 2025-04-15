@@ -1,22 +1,36 @@
 package com.fieldmanagement.fieldmanagement_be.booking.usecase;
 
 import com.fieldmanagement.fieldmanagement_be.booking.adapter.mapper.BookingMapper;
+import com.fieldmanagement.fieldmanagement_be.booking.adapter.web.dto.request.BookingFilterRequest;
 import com.fieldmanagement.fieldmanagement_be.booking.adapter.web.dto.request.CreateBookingRequest;
 import com.fieldmanagement.fieldmanagement_be.booking.adapter.web.dto.response.BookingDetailResponse;
+import com.fieldmanagement.fieldmanagement_be.booking.adapter.web.dto.response.BookingResponse;
+import com.fieldmanagement.fieldmanagement_be.booking.domain.dto.BookingDTO;
 import com.fieldmanagement.fieldmanagement_be.booking.domain.model.Booking;
 import com.fieldmanagement.fieldmanagement_be.booking.domain.port.BookingRepository;
 import com.fieldmanagement.fieldmanagement_be.booking.exception.BookingFailedException;
+import com.fieldmanagement.fieldmanagement_be.common.base.dto.PageResult;
 import com.fieldmanagement.fieldmanagement_be.common.base.enums.BookingStatusEnum;
 import com.fieldmanagement.fieldmanagement_be.common.base.enums.ImageTargetTypeEnum;
+import com.fieldmanagement.fieldmanagement_be.common.helper.MetaDataHelper;
+import com.fieldmanagement.fieldmanagement_be.common.helper.SortHelper;
 import com.fieldmanagement.fieldmanagement_be.common.util.SecurityUtils;
 import com.fieldmanagement.fieldmanagement_be.field.domain.model.HourlyRate;
 import com.fieldmanagement.fieldmanagement_be.field.domain.model.SubField;
 import com.fieldmanagement.fieldmanagement_be.field.domain.port.HourlyRateQueryPort;
 import com.fieldmanagement.fieldmanagement_be.field.domain.port.SubFieldQueryPort;
+import com.fieldmanagement.fieldmanagement_be.field.exception.BookingNotFoundException;
+import com.fieldmanagement.fieldmanagement_be.field.exception.HourlyRateNotFoundException;
+import com.fieldmanagement.fieldmanagement_be.field.exception.SubFieldNotFoundException;
 import com.fieldmanagement.fieldmanagement_be.image.domain.port.ImageQueryPort;
 import com.fieldmanagement.fieldmanagement_be.user.domain.model.User;
 import com.fieldmanagement.fieldmanagement_be.user.domain.port.UserQueryPort;
+import com.fieldmanagement.fieldmanagement_be.user.exception.UserDoesNotHavePermission;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,13 +51,13 @@ public class BookingUseCase {
     public BookingDetailResponse createBooking(CreateBookingRequest request) {
         String email = SecurityUtils.getUserEmailFromSecurity();
         User user = userQueryPort.findByEmail(email)
-                .orElseThrow();
+                .orElseThrow(() -> new UserDoesNotHavePermission("Người dùng không có quyền truy cập"));
 
         SubField subField = subFieldQueryPort.findById(request.getSubFieldId())
-                .orElseThrow();
+                .orElseThrow(() -> new SubFieldNotFoundException("Không tìm thấy sân"));
 
         HourlyRate hourlyRate = hourlyRateQueryPort.findById(request.getHourlyRateId())
-                .orElseThrow();
+                .orElseThrow(() -> new HourlyRateNotFoundException("Không tìm thấy khung giờ"));
 
         validateBookingRequest(request.getSubFieldId(), request.getHourlyRateId(), request.getDate(), subField);
 
@@ -71,16 +85,49 @@ public class BookingUseCase {
         }
     }
 
-
     public BookingDetailResponse getBookingDetailById(String id) {
         BookingDetailResponse response = bookingRepository.findById(id)
                 .map(bookingMapper::toBookingDetailResponse)
-                .orElseThrow();
-        List<String> images = imageQueryPort.getImagePathsByTarget(
-                response.getField().getId(), ImageTargetTypeEnum.FIELD
+                .map(bookingResponse -> {
+                    List<String> images = imageQueryPort.getImagePathsByTarget(
+                            bookingResponse.getField().getId(), ImageTargetTypeEnum.FIELD
+                    );
+
+                    bookingResponse.getField().setImages(images);
+                    return bookingResponse;
+                })
+                .orElseThrow(() -> new BookingNotFoundException(""));
+        return response;
+    }
+
+    public PageResult<List<BookingResponse>> getBookingOfUser(BookingFilterRequest request) {
+        String email = SecurityUtils.getUserEmailFromSecurity();
+        User user = userQueryPort.findByEmail(email)
+                .orElseThrow(() -> new UserDoesNotHavePermission("Người dùng không có quyền truy cập"));
+
+        Sort sort = SortHelper.buildSort(request.getOrder(), request.getDirection());
+        Pageable pageable = PageRequest.of(request.getCurrentPage() - 1, request.getPageSize(), sort);
+
+        Page<BookingDTO> bookingDTOS = bookingRepository.getAllBookingOfUser(
+                request.getKeyword(), user.getId(), request.getStatus(),
+                request.getFromDate(), request.getToDate(), pageable
         );
 
-        response.getField().setImages(images);
-        return response;
+        List<BookingResponse> bookingResponses = bookingDTOS.getContent()
+                .stream()
+                .map(bookingMapper::toBookingResponse)
+                .peek(bookingResponse -> {
+                    List<String> images = imageQueryPort.getImagePathsByTarget(
+                            bookingResponse.getField().getId(), ImageTargetTypeEnum.FIELD
+                    );
+
+                    bookingResponse.getField().setImages(images);
+                })
+                .toList();
+
+        return PageResult.<List<BookingResponse>>builder()
+                .data(bookingResponses)
+                .metaData(MetaDataHelper.buildMetaData(bookingDTOS, request))
+                .build();
     }
 }

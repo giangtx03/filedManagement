@@ -35,7 +35,7 @@ public class FieldUseCase {
         Page<FieldDTO> fieldDTOS = fieldRepository.getAllFields(
                 filterRequest.getKeyword(), filterRequest.getLocation(),
                 filterRequest.getStartPrice(), filterRequest.getEndPrice(),
-                filterRequest.getStartTime(), filterRequest.getEndTime(), pageable
+                filterRequest.getFromTime(), filterRequest.getToTime(), pageable
         );
 
         List<FieldResponse> fieldResponses = fieldDTOS.getContent()
