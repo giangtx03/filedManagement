@@ -1,5 +1,6 @@
 package com.fieldmanagement.fieldmanagement_be.common.base.dto;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -13,11 +14,13 @@ import lombok.Setter;
 public class PaginationRequest {
     @NotNull
     @Min(1)
+    @Parameter(example = "1")
     private int currentPage;
 
     @NotNull
     @Min(1)
     @Max(500)
+    @Parameter(example = "10")
     private int pageSize;
 
     public PaginationRequest(){

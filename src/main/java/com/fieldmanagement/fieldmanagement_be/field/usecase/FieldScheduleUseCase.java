@@ -19,12 +19,12 @@ public class FieldScheduleUseCase {
     private final HourlyRateMapper hourlyRateMapper;
 
     public List<ScheduleResponse> getSchedules(
-            String subFieldId, LocalDate startDate, LocalDate endDate
+            String subFieldId, LocalDate fromDate, LocalDate toDate
     ) {
         List<ScheduleResponse> responses = new ArrayList<>();
-        LocalDate current = startDate;
+        LocalDate current = fromDate;
 
-        while (!current.isAfter(endDate)) {
+        while (!current.isAfter(toDate)) {
             List<TimeSlotResponse> slots = hourlyRateRepository.getSchedulesBySubFieldAndDate(subFieldId, current)
                     .stream()
                     .map(hourlyRateMapper::toTimeSlotResponse)

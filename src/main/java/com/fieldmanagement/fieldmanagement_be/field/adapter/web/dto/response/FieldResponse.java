@@ -19,7 +19,6 @@ import java.util.List;
 @SuperBuilder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class FieldResponse extends FieldSimpleResponse {
-    String location;
     String description;
     UserResponse owner;
     @ImageField
