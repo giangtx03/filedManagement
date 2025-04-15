@@ -25,6 +25,7 @@ public class FieldEntityDTO extends FieldEntity {
         super.setId(field.getId());
         super.setName(field.getName());
         super.setLocation(field.getLocation());
+        super.setUrlSlug(field.getUrlSlug());
         super.setDescription(field.getDescription());
         super.setOwner(field.getOwner());
         super.setSubFields(field.getSubFields());

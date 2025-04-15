@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -18,4 +19,5 @@ public class FieldSimpleResponse extends BaseResponse {
     String id;
     String name;
     String location;
+    String urlSlug;
 }

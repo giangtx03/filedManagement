@@ -90,5 +90,5 @@ request:
     attempts: ${REQUEST_MAX_ATTEMPTS}
 
 images:
-  path: ${IMAGES_PATH:uploads}
-  base-url: ${IMAGES_BASE_URL:http://localhost:8080/images/}
+  path: ${IMAGES_PATH}
+  base-url: ${IMAGES_BASE_URL}
