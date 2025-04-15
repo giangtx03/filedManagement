@@ -46,14 +46,14 @@ public class ImageLocalServiceImpl implements FileService {
 
         Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
 
-        return destination.toString();
+        return uniqueFilename;
     }
 
     @Override
-    public Resource download(String pathImage) throws FileNotFoundException, MalformedURLException {
-        Path fileSrc = Paths.get(pathImage);
+    public Resource download(String filename) throws FileNotFoundException, MalformedURLException {
+        Path fileSrc = Paths.get(path + "/" + filename);
         if (!Files.exists(fileSrc)) {
-            throw new FileNotFoundException("Không tìm thấy file " + pathImage);
+            throw new FileNotFoundException("Không tìm thấy file " + filename);
         }
         return new UrlResource(fileSrc.toUri());
     }

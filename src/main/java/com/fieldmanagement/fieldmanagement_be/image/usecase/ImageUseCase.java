@@ -5,6 +5,7 @@ import com.fieldmanagement.fieldmanagement_be.image.domain.model.Image;
 import com.fieldmanagement.fieldmanagement_be.image.domain.port.ImageRepository;
 import com.fieldmanagement.fieldmanagement_be.image.exception.ImageNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +18,10 @@ public class ImageUseCase {
     private final FileService fileService;
     private final ImageRepository imageRepository;
 
-    public Resource getImageFile(String pathImg) throws MalformedURLException, FileNotFoundException {
-        Image image = imageRepository.findByPath(pathImg)
-                .orElseThrow(() -> new ImageNotFoundException("Image not found"));
-        return fileService.download(image.getPath());
+    public Resource getImageFile(String fileName)
+            throws MalformedURLException, FileNotFoundException
+    {
+        return fileService.download(fileName);
     }
 
 }

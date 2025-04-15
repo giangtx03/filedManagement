@@ -15,15 +15,15 @@ import java.net.MalformedURLException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/${api.prefix}/images")
+@RequestMapping("${api.prefix}/images")
 public class ImageController {
     private final ImageUseCase imageUseCase;
 
-    @GetMapping("/{pathImg}")
-    public ResponseEntity<?> getImage(@PathVariable("pathImg") String pathImg)
+    @GetMapping("/{fileName}")
+    public ResponseEntity<?> getImage(@PathVariable("fileName") String fileName)
             throws MalformedURLException, FileNotFoundException
     {
-        Resource source = imageUseCase.getImageFile(pathImg);
+        Resource source = imageUseCase.getImageFile(fileName);
         return ResponseEntity.ok()
                 .contentType(MediaType.IMAGE_PNG)
                 .body(source);
