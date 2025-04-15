@@ -50,10 +50,10 @@ public class ImageLocalServiceImpl implements FileService {
     }
 
     @Override
-    public Resource download(String filename) throws FileNotFoundException, MalformedURLException {
-        Path fileSrc = Paths.get(path + "/" + filename);
+    public Resource download(String pathImage) throws FileNotFoundException, MalformedURLException {
+        Path fileSrc = Paths.get(pathImage);
         if (!Files.exists(fileSrc)) {
-            throw new FileNotFoundException("Không tìm thấy file " + filename);
+            throw new FileNotFoundException("Không tìm thấy file " + pathImage);
         }
         return new UrlResource(fileSrc.toUri());
     }
