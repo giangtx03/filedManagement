@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Primary
@@ -29,5 +30,14 @@ public class BookingRepositoryImpl implements BookingRepository {
     public Optional<BookingDTO> findById(String id) {
         return jpaBookingRepository.findDtoById(id)
                 .map(bookingMapper::toBookingDTO);
+    }
+
+    @Override
+    public boolean isBookedBySubFieldAndHourlyRateAndDate(
+            String subFiledId, String hourlyRateId, LocalDate date
+    ) {
+        return jpaBookingRepository.isBookedBySubFieldAndHourlyRateAndDate(
+                subFiledId, hourlyRateId, date
+        );
     }
 }
