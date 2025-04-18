@@ -1,7 +1,7 @@
 package com.fieldmanagement.fieldmanagement_be.booking.adapter.db.entity;
 
 import com.fieldmanagement.fieldmanagement_be.common.base.entity.BaseEntity;
-import com.fieldmanagement.fieldmanagement_be.common.base.enums.BookingStatusEnum;
+import com.fieldmanagement.fieldmanagement_be.booking.domain.model.BookingStatusEnum;
 import com.fieldmanagement.fieldmanagement_be.field.adapter.db.entity.HourlyRateEntity;
 import com.fieldmanagement.fieldmanagement_be.field.adapter.db.entity.SubFieldEntity;
 import com.fieldmanagement.fieldmanagement_be.payment.adapter.db.entity.PaymentEntity;

@@ -1,6 +1,6 @@
 package com.fieldmanagement.fieldmanagement_be.image.domain.port;
 
-import com.fieldmanagement.fieldmanagement_be.common.base.enums.ImageTargetTypeEnum;
+import com.fieldmanagement.fieldmanagement_be.image.domain.model.ImageTargetTypeEnum;
 
 import java.util.List;
 

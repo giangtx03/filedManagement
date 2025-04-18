@@ -1,6 +1,5 @@
 package com.fieldmanagement.fieldmanagement_be.field.domain.model;
 
-import com.fieldmanagement.fieldmanagement_be.common.base.enums.FieldTypeEnum;
 import com.fieldmanagement.fieldmanagement_be.common.base.model.BaseModel;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

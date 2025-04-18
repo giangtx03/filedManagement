@@ -1,7 +1,7 @@
 package com.fieldmanagement.fieldmanagement_be.config.oauth2;
 
-import com.fieldmanagement.fieldmanagement_be.common.base.enums.ProviderEnum;
-import com.fieldmanagement.fieldmanagement_be.common.base.enums.RoleEnum;
+import com.fieldmanagement.fieldmanagement_be.user.domain.model.ProviderEnum;
+import com.fieldmanagement.fieldmanagement_be.user.domain.model.RoleEnum;
 import com.fieldmanagement.fieldmanagement_be.user.domain.model.User;
 import com.fieldmanagement.fieldmanagement_be.user.domain.model.UserDetail;
 import com.fieldmanagement.fieldmanagement_be.user.domain.port.UserRepository;

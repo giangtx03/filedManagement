@@ -1,6 +1,6 @@
 package com.fieldmanagement.fieldmanagement_be.image.adapter.db.impl;
 
-import com.fieldmanagement.fieldmanagement_be.common.base.enums.ImageTargetTypeEnum;
+import com.fieldmanagement.fieldmanagement_be.image.domain.model.ImageTargetTypeEnum;
 import com.fieldmanagement.fieldmanagement_be.image.domain.model.Image;
 import com.fieldmanagement.fieldmanagement_be.image.domain.port.ImageQueryPort;
 import com.fieldmanagement.fieldmanagement_be.image.domain.port.ImageRepository;

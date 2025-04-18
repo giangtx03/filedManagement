@@ -1,4 +1,4 @@
-package com.fieldmanagement.fieldmanagement_be.common.base.enums;
+package com.fieldmanagement.fieldmanagement_be.user.domain.model;
 
 public enum RoleEnum {
     ADMIN(0), MANAGER(1), USER(2);

@@ -51,6 +51,8 @@ spring:
             - email
         provider:
           facebook:
+            authorization-uri: https://www.facebook.com/dialog/oauth
+            token-uri: https://graph.facebook.com/oauth/access_token
             user-info-uri: https://graph.facebook.com/me?fields=id,name,email,picture
   servlet:
     multipart:

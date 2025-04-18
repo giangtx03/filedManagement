@@ -1,4 +1,4 @@
-package com.fieldmanagement.fieldmanagement_be.common.base.enums;
+package com.fieldmanagement.fieldmanagement_be.payment.domain.model;
 
 public enum PaymentTypeEnum {
     PAY(0), DEPOSIT(1), REFUNDED(2);

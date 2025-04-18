@@ -1,7 +1,5 @@
 package com.fieldmanagement.fieldmanagement_be.user.domain.model;
 
-import com.fieldmanagement.fieldmanagement_be.common.base.enums.ProviderEnum;
-import com.fieldmanagement.fieldmanagement_be.common.base.enums.RoleEnum;
 import com.fieldmanagement.fieldmanagement_be.common.base.model.BaseModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,7 +1,7 @@
 package com.fieldmanagement.fieldmanagement_be.booking.adapter.web.dto.response;
 
 import com.fieldmanagement.fieldmanagement_be.common.base.dto.BaseResponse;
-import com.fieldmanagement.fieldmanagement_be.common.base.enums.BookingStatusEnum;
+import com.fieldmanagement.fieldmanagement_be.booking.domain.model.BookingStatusEnum;
 import com.fieldmanagement.fieldmanagement_be.field.adapter.web.dto.response.FieldResponse;
 import com.fieldmanagement.fieldmanagement_be.field.adapter.web.dto.response.HourlyRateResponse;
 import com.fieldmanagement.fieldmanagement_be.field.adapter.web.dto.response.SubFieldResponse;

@@ -1,7 +1,7 @@
 package com.fieldmanagement.fieldmanagement_be.user.adapter.mapper;
 
-import com.fieldmanagement.fieldmanagement_be.common.base.enums.ProviderEnum;
-import com.fieldmanagement.fieldmanagement_be.common.base.enums.RoleEnum;
+import com.fieldmanagement.fieldmanagement_be.user.domain.model.ProviderEnum;
+import com.fieldmanagement.fieldmanagement_be.user.domain.model.RoleEnum;
 import com.fieldmanagement.fieldmanagement_be.user.adapter.db.entity.UserDetailEntity;
 import com.fieldmanagement.fieldmanagement_be.user.adapter.db.entity.UserEntity;
 import com.fieldmanagement.fieldmanagement_be.user.adapter.web.dto.request.RegisterRequest;

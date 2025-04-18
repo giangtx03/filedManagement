@@ -1,4 +1,4 @@
-package com.fieldmanagement.fieldmanagement_be.common.base.enums;
+package com.fieldmanagement.fieldmanagement_be.field.domain.model;
 
 public enum FieldTypeEnum {
     FIELD_5(0), FIELD_7(1), FIELD_9(2), FIELD_11(3);

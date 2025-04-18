@@ -1,6 +1,5 @@
 package com.fieldmanagement.fieldmanagement_be.booking.domain.model;
 
-import com.fieldmanagement.fieldmanagement_be.common.base.enums.BookingStatusEnum;
 import com.fieldmanagement.fieldmanagement_be.common.base.model.BaseModel;
 import com.fieldmanagement.fieldmanagement_be.field.domain.model.HourlyRate;
 import com.fieldmanagement.fieldmanagement_be.field.domain.model.SubField;

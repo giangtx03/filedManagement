@@ -6,7 +6,7 @@ import com.fieldmanagement.fieldmanagement_be.booking.adapter.mapper.BookingMapp
 import com.fieldmanagement.fieldmanagement_be.booking.domain.dto.BookingDTO;
 import com.fieldmanagement.fieldmanagement_be.booking.domain.model.Booking;
 import com.fieldmanagement.fieldmanagement_be.booking.domain.port.BookingRepository;
-import com.fieldmanagement.fieldmanagement_be.common.base.enums.BookingStatusEnum;
+import com.fieldmanagement.fieldmanagement_be.booking.domain.model.BookingStatusEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;

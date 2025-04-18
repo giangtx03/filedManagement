@@ -1,4 +1,4 @@
-package com.fieldmanagement.fieldmanagement_be.common.base.enums;
+package com.fieldmanagement.fieldmanagement_be.user.domain.model;
 
 import java.util.Arrays;
 

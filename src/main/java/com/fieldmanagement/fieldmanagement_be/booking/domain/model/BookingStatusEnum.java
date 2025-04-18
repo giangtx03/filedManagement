@@ -1,4 +1,4 @@
-package com.fieldmanagement.fieldmanagement_be.common.base.enums;
+package com.fieldmanagement.fieldmanagement_be.booking.domain.model;
 
 public enum BookingStatusEnum {
     PENDING(0),AWAITING_PAYMENT(1),

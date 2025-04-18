@@ -2,7 +2,7 @@ package com.fieldmanagement.fieldmanagement_be.user.adapter.web.controller;
 
 import com.fieldmanagement.fieldmanagement_be.common.base.builder.ResponseBuilder;
 import com.fieldmanagement.fieldmanagement_be.common.base.dto.ResponseDto;
-import com.fieldmanagement.fieldmanagement_be.common.base.enums.ProviderEnum;
+import com.fieldmanagement.fieldmanagement_be.user.domain.model.ProviderEnum;
 import com.fieldmanagement.fieldmanagement_be.common.base.enums.StatusCodeEnum;
 import com.fieldmanagement.fieldmanagement_be.infra.language.LanguageService;
 import com.fieldmanagement.fieldmanagement_be.user.adapter.web.dto.request.LoginRequest;

@@ -1,7 +1,7 @@
 package com.fieldmanagement.fieldmanagement_be.booking.adapter.web.dto.request;
 
 import com.fieldmanagement.fieldmanagement_be.common.base.dto.SearchRequest;
-import com.fieldmanagement.fieldmanagement_be.common.base.enums.BookingStatusEnum;
+import com.fieldmanagement.fieldmanagement_be.booking.domain.model.BookingStatusEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

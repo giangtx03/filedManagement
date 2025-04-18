@@ -1,7 +1,7 @@
 package com.fieldmanagement.fieldmanagement_be.field.adapter.web.dto.request;
 
 import com.fieldmanagement.fieldmanagement_be.common.base.dto.SearchRequest;
-import com.fieldmanagement.fieldmanagement_be.common.base.enums.FieldTypeEnum;
+import com.fieldmanagement.fieldmanagement_be.field.domain.model.FieldTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,7 +1,7 @@
 package com.fieldmanagement.fieldmanagement_be.field.usecase;
 
 import com.fieldmanagement.fieldmanagement_be.common.base.dto.PageResult;
-import com.fieldmanagement.fieldmanagement_be.common.base.enums.ImageTargetTypeEnum;
+import com.fieldmanagement.fieldmanagement_be.image.domain.model.ImageTargetTypeEnum;
 import com.fieldmanagement.fieldmanagement_be.common.helper.MetaDataHelper;
 import com.fieldmanagement.fieldmanagement_be.common.helper.SortHelper;
 import com.fieldmanagement.fieldmanagement_be.field.adapter.mapper.FieldMapper;

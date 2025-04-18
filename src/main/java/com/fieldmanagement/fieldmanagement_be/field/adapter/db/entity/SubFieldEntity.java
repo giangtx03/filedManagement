@@ -2,7 +2,7 @@ package com.fieldmanagement.fieldmanagement_be.field.adapter.db.entity;
 
 import com.fieldmanagement.fieldmanagement_be.booking.adapter.db.entity.BookingEntity;
 import com.fieldmanagement.fieldmanagement_be.common.base.entity.BaseEntity;
-import com.fieldmanagement.fieldmanagement_be.common.base.enums.FieldTypeEnum;
+import com.fieldmanagement.fieldmanagement_be.field.domain.model.FieldTypeEnum;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

@@ -1,4 +1,4 @@
-package com.fieldmanagement.fieldmanagement_be.common.base.enums;
+package com.fieldmanagement.fieldmanagement_be.payment.domain.model;
 
 public enum PaymentMethodEnum {
     CASH(0), VNPAY(1), CREDIT(2);

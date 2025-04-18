@@ -1,4 +1,4 @@
-package com.fieldmanagement.fieldmanagement_be.common.base.enums;
+package com.fieldmanagement.fieldmanagement_be.image.domain.model;
 
 public enum ImageTargetTypeEnum {
     FIELD(0), USER(1), REVIEW(2);

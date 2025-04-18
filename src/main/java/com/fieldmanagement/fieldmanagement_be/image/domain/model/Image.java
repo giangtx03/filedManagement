@@ -1,6 +1,5 @@
 package com.fieldmanagement.fieldmanagement_be.image.domain.model;
 
-import com.fieldmanagement.fieldmanagement_be.common.base.enums.ImageTargetTypeEnum;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

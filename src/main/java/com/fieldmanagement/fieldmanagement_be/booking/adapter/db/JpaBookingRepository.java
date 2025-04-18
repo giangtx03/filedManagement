@@ -2,7 +2,7 @@ package com.fieldmanagement.fieldmanagement_be.booking.adapter.db;
 
 import com.fieldmanagement.fieldmanagement_be.booking.adapter.db.dto.BookingEntityDTO;
 import com.fieldmanagement.fieldmanagement_be.booking.adapter.db.entity.BookingEntity;
-import com.fieldmanagement.fieldmanagement_be.common.base.enums.BookingStatusEnum;
+import com.fieldmanagement.fieldmanagement_be.booking.domain.model.BookingStatusEnum;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -46,7 +46,7 @@ public interface JpaBookingRepository extends JpaRepository<BookingEntity, Strin
             FROM Booking b
             LEFT JOIN Field f ON b.subField.field.id = f.id
             WHERE b.user.id = :id
-                AND (:keyword IS NULL OR :keyword = "" OR :keyword LIKE CONCAT('%', f.name,'%'))
+                AND (:keyword IS NULL OR :keyword = "" OR LOWER(f.name) LIKE LOWER(CONCAT('%', :keyword, '%')))
                 AND (:status IS NULL OR b.status = :status)
                 AND (:fromDate IS NULL OR b.bookingDate >= :fromDate)
                 AND (:toDate IS NULL OR b.bookingDate <= :toDate)

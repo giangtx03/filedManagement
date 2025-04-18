@@ -1,6 +1,6 @@
 package com.fieldmanagement.fieldmanagement_be.image.adapter.db.impl;
 
-import com.fieldmanagement.fieldmanagement_be.common.base.enums.ImageTargetTypeEnum;
+import com.fieldmanagement.fieldmanagement_be.image.domain.model.ImageTargetTypeEnum;
 import com.fieldmanagement.fieldmanagement_be.image.adapter.db.JpaImageRepository;
 import com.fieldmanagement.fieldmanagement_be.image.adapter.db.entity.ImageEntity;
 import com.fieldmanagement.fieldmanagement_be.image.adapter.mapper.ImageMapper;

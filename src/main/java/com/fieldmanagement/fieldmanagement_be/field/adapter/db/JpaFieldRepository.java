@@ -33,7 +33,7 @@ public interface JpaFieldRepository extends JpaRepository<FieldEntity, String> {
             LEFT JOIN Review r ON r.field.id = f.id
             LEFT JOIN f.subFields sf
             LEFT JOIN sf.hourlyRates hr
-            WHERE (:keyword IS NULL OR :keyword = '' OR f.name LIKE CONCAT('%', :keyword, '%'))
+            WHERE (:keyword IS NULL OR :keyword = '' OR LOWER(f.name) LIKE LOWER(CONCAT('%', :keyword, '%')))
                 AND (:location IS NULL OR f.location LIKE CONCAT('%', :location, '%'))
                 AND (:startPrice IS NULL OR hr.price >= :startPrice)
                 AND (:endPrice IS NULL OR hr.price <= :endPrice)

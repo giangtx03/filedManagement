@@ -1,7 +1,7 @@
 package com.fieldmanagement.fieldmanagement_be.image.adapter.db.entity;
 
 import com.fieldmanagement.fieldmanagement_be.common.base.entity.BaseEntity;
-import com.fieldmanagement.fieldmanagement_be.common.base.enums.ImageTargetTypeEnum;
+import com.fieldmanagement.fieldmanagement_be.image.domain.model.ImageTargetTypeEnum;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
