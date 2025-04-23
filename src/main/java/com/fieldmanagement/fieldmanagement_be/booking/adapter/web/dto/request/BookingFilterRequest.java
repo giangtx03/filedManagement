@@ -5,6 +5,7 @@ import com.fieldmanagement.fieldmanagement_be.booking.domain.model.BookingStatus
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -12,7 +13,9 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class BookingFilterRequest extends SearchRequest {
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate fromDate;
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate toDate;
     private BookingStatusEnum status;
 }

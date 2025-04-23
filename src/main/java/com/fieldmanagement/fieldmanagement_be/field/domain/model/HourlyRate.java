@@ -21,5 +21,5 @@ public class HourlyRate extends BaseModel {
     String id;
     LocalTime startTime;
     LocalTime endTime;
-    Float price;
+    Long price;
 }

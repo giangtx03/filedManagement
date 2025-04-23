@@ -1,6 +1,5 @@
 package com.fieldmanagement.fieldmanagement_be.common.base.builder;
 
-import com.fieldmanagement.fieldmanagement_be.common.base.dto.MetaData;
 import com.fieldmanagement.fieldmanagement_be.common.base.dto.PageResponseDto;
 import com.fieldmanagement.fieldmanagement_be.common.base.dto.PageResult;
 import com.fieldmanagement.fieldmanagement_be.common.base.dto.ResponseDto;

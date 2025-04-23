@@ -38,7 +38,7 @@ public class PaymentEntity {
     String id;
 
     @Column(name = "amount", nullable = false)
-    Float amount;
+    Long amount;
 
     @Column(name = "payment_time", nullable = false)
     OffsetDateTime paymentTime;

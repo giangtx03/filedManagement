@@ -18,5 +18,5 @@ public class HourlyRateResponse extends BaseResponse {
     private String id;
     private LocalTime startTime;
     private LocalTime endTime;
-    private Float price;
+    private Long price;
 }

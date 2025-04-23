@@ -1,8 +1,8 @@
 package com.fieldmanagement.fieldmanagement_be.booking.domain.model;
 
 public enum BookingStatusEnum {
-    PENDING(0),AWAITING_PAYMENT(1),
-    PAID(2), CONFIRMED(3), IN_PROGRESS(4),
+    PENDING(0),AWAITING_PAYMENT(1), PAID_DEPOSIT(2),
+    PAID(3), IN_PROGRESS(4),
     COMPLETED(5), CANCELED(6), REFUNDED(7);
 
     public final int value;

@@ -45,7 +45,7 @@ public class HourlyRateEntity extends BaseEntity {
     LocalTime endTime;
 
     @Column(name = "price", nullable = false)
-    Float price;
+    Long price;
 
     @OneToMany(mappedBy = "hourlyRate")
     List<BookingEntity> bookings;

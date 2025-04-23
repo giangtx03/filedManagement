@@ -1,9 +1,8 @@
 package com.fieldmanagement.fieldmanagement_be.field.adapter.db.impl;
 
-import com.fieldmanagement.fieldmanagement_be.field.adapter.db.JpaSubFieldRepository;
-import com.fieldmanagement.fieldmanagement_be.field.adapter.mapper.SubFieldMapper;
 import com.fieldmanagement.fieldmanagement_be.field.domain.model.SubField;
 import com.fieldmanagement.fieldmanagement_be.field.domain.port.SubFieldQueryPort;
+import com.fieldmanagement.fieldmanagement_be.field.domain.port.SubFieldRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
@@ -14,12 +13,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Primary
 public class SubFieldQueryPortImpl implements SubFieldQueryPort {
-    private final JpaSubFieldRepository jpaSubFieldRepository;
-    private final SubFieldMapper subFieldMapper;
+    private final SubFieldRepository subFieldRepository;
 
     @Override
     public Optional<SubField> findById(String id) {
-        return jpaSubFieldRepository.findById(id)
-                .map(subFieldMapper::toSubField);
+        return subFieldRepository.findById(id);
     }
 }

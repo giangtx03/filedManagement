@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
@@ -29,6 +30,7 @@ public class UpdateProfileRequest {
     @ValidPhoneNumber(message = "valid.phoneNumber.principle")
     private String phoneNumber;
 
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     @NotNull(message = "valid.birthDate.notNull")
     @ValidBirthDate(message = "valid.birthDate.principle")
     private LocalDate dob;
